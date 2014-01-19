@@ -1,0 +1,30 @@
+#CC		= gcc
+CC		= i586-mingw32msvc-gcc
+SVNVERS         = $(shell svnversion)
+
+CFLAGS          = -Wall -g -O -DMINGW32 -Ihidapi -DSVNVERSION='"$(SVNVERS)"'
+LDFLAGS         = -s
+
+# Windows
+LIBS            += -lhid -lsetupapi
+HIDSRC          = hidapi/hid-windows.c
+
+
+
+
+
+PROG_OBJS       = pmktool.o device.o hid.o opcodes.o parse.o
+
+all:		pmktool.exe
+
+pmktool.exe:	$(PROG_OBJS)
+		$(CC) $(LDFLAGS) -o $@ $(PROG_OBJS) $(LIBS)
+
+hid.o:          $(HIDSRC)
+		$(CC) $(CFLAGS) -c -o $@ $<
+
+###
+device.o: device.c device.h hidapi/hidapi.h
+opcodes.o: opcodes.c
+parse.o: parse.c
+pmktool.o: pmktool.c device.h localize.h

@@ -1,0 +1,18 @@
+PROG            = test
+CFLAGS		= -m32 -O -Wall -Werror
+LDFLAGS		= -m32
+OBJS            = ir2.o ik13.o calc.o test.o
+
+all:		$(PROG)
+
+$(PROG):        $(OBJS)
+		$(CC) $(LDFLAGS) $(OBJS) -o $@
+
+clean:
+		rm -f $(PROG) *.o *~ a.out
+
+###
+ik13.o: ik13.c calc.h
+ir2.o: ir2.c calc.h
+calc.o: calc.c calc.h ik1302.c ik1303.c
+test.o: test.c calc.h
