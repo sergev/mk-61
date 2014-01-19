@@ -170,7 +170,7 @@ void do_parse (char *filename)
 void do_program (char *filename)
 {
     unsigned char code[105];
-    int nbytes, last;
+    int nbytes;
 
     /* Parse the program source. */
     nbytes = parse_prog (filename, code);
@@ -183,13 +183,7 @@ void do_program (char *filename)
         exit (1);
     }
 
-    /* Find the last instruction. */
-    last = nbytes;
-    while (--last > 0)
-        if (code[last] != 0)
-            break;
-
-    printf (_("Write program: %d instructions\n"), last);
+    printf (_("Write program: %d instructions\n"), nbytes);
     if (nbytes > device_code_nbytes()) {
         fprintf (stderr, _("Program too large for this device!\n"));
         exit (1);
