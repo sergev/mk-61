@@ -1,7 +1,13 @@
 PROG            = test
-CFLAGS		= -m32 -O -Wall -Werror
+CFLAGS		= -m32 -O -Wall -Werror -I..
 LDFLAGS		= -m32
 OBJS            = ir2.o ik13.o calc.o test.o
+VPATH           = ..
+
+#
+# Select MK-61 (default) or MK-64.
+#
+CFLAGS          += -DMK_54
 
 all:		$(PROG)
 
