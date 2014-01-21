@@ -60,8 +60,9 @@ load:           $(PROG).hex
 		pic32prog $(PROG).hex
 
 clean:
-		rm -f *.o *.lst *~ *.elf $(PROG).hex *.dis test $(PROG)
+		rm -f *.o *.lst *~ *.elf $(PROG).hex *.dis $(PROG)
 		@$(MAKE) -C pmktool $@
+		@$(MAKE) -C test $@
 
 debug:          $(PROG).hex
 		$(GDB) $(PROG).elf

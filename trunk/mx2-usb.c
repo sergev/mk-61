@@ -468,7 +468,7 @@ void calc_poll()
 /*
  * Perform non-volatile memory operation.
  */
-/*static*/ void nvm_operation (unsigned op, unsigned address, unsigned data)
+static void nvm_operation (unsigned op, unsigned address, unsigned data)
 {
     int i;
 
@@ -547,8 +547,9 @@ void restore_prog()
 void save_prog()
 {
     int i;
+
 #if 1
-    // Set segments to visualize the operation.
+    // DEBUG: set segments to visualize the operation.
     TRISBCLR = PIN(0) | PIN(1) | PIN(3) | PIN(4) |
                PIN(13) | PIN(14) | PIN(15);
     TRISACLR = PIN(4);
