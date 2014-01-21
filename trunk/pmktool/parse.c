@@ -242,13 +242,15 @@ static void getname (c)
 {
     char *cp;
 
-    for (cp=name; c>=0 && !isspace(c); c=getchar()) {
+    for (cp=name; c>=0 && !isspace(c) && c!=':'; c=getchar()) {
         if (c & 0x80) {
             // Parse utf8 encoding.
             int c2 = getchar();
             if (! (c & 0x20)) {
-                // Convert cyrillics and symbol π
+                // Convert cyrillics and symbols π, ÷
                 switch (c<<8 | c2) {
+                case 0xc3b7: c = '/'; break;    // ÷ -> /
+                case 0xcf80: c = '@'; break;    // π -> @
                 case 0xd092: c = 'B'; break;    // В
                 case 0xd09a: c = 'K'; break;    // К
                 case 0xd09c: c = 'M'; break;    // М
@@ -258,7 +260,6 @@ static void getname (c)
                 case 0xd0be: c = 'o'; break;    // о
                 case 0xd183: c = 'y'; break;    // у
                 case 0xd185: c = 'x'; break;    // х
-                case 0xcf80: c = '@'; break;    // π -> @
                 default:
                     *cp++ = c;
                     c = c2;
@@ -504,6 +505,7 @@ static void pass1()
                 uerror ("unknown instruction '%s'", name);
             labelref[count] = 1;
             code[count++] = i;
+            need_address = 0;
             break;
         case LNUM:
             /* Numeric label or address. */
@@ -585,7 +587,8 @@ static void pass2()
     for (i=0; i<count; i++) {
         if (labelref[i]) {
             /* Use value of the label. */
-            code[i] = label[code[i]].value;
+            int addr = label[code[i]].value;
+            code[i] = (addr / 10) << 4 | (addr % 10);
         }
     }
 }
