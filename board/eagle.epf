@@ -332,12 +332,18 @@ UsedLibrary="/home/sergev/.eagle/lbr/zetex.lbr"
 UsedLibrary="/home/sergev/.eagle/lbr/zilog.lbr"
 
 [Win_1]
+Type="Control Panel"
+Loc="1281 24 1880 423"
+State=2
+Number=0
+
+[Win_2]
 Type="Schematic Editor"
-Loc="0 0 599 399"
+Loc="58 24 1227 1031"
 State=2
 Number=1
 File="/home/sergev/Project/mk-61/trunk/board/replica61.sch"
-View="-361809 -713180 2517841 1082076"
+View="-178655 -775927 2700995 1019331"
 WireWidths=" 0 3048 6096 8128 10160 12700 14224 16764 17780 19304 21844 25400 38100 64516 4064 1524"
 PadDiameters=" 2540 3048 4064 6096 8128 10160 12700 14224 16764 17780 19304 21844 25400 38100 64516 0"
 PadDrills=" 5000 6000 7000 9000 10000 11000 12000 13000 14000 15000 16000 20000 22000 28000 32000 8000"
@@ -369,13 +375,8 @@ ArcDirection=0
 AddLevel=2
 PadsSameType=0
 Layer=91
+Views=" 1: -178655 -775927 2700995 1019331"
 Sheet=1
-
-[Win_2]
-Type="Control Panel"
-Loc="1288 24 1887 423"
-State=2
-Number=0
 
 [Desktop]
 Screen="1920 1080"
