@@ -43,7 +43,7 @@ typedef struct {
     unsigned char M [REG_NWORDS];       // M register
     unsigned char ST [REG_NWORDS];      // ST register
     unsigned S;
-    unsigned S1;
+    unsigned Q;
     unsigned carry;
     unsigned keypad_event;
     unsigned opcode;
@@ -181,3 +181,51 @@ void calc_get_code (unsigned char code[]);
 // Update the program code.
 //
 void calc_write_code (unsigned char code[]);
+
+//
+// Microinstructions
+//
+#define UCMD_ALPHA_R        0x0000001   // alpha |= Ri
+#define UCMD_ALPHA_M        0x0000002   // alpha |= Mi
+#define UCMD_ALPHA_ST       0x0000004   // alpha |= STi
+#define UCMD_ALPHA_NR       0x0000008   // alpha |= ~Ri
+#define UCMD_ALPHA_C10      0x0000010   // if (! carry) alpha |= 10
+#define UCMD_ALPHA_S        0x0000020   // alpha |= S
+#define UCMD_ALPHA_4        0x0000040   // alpha |= 4
+
+#define UCMD_BETA_S         0x0000080   // beta |= S
+#define UCMD_BETA_NS        0x0000100   // beta |= ~S
+#define UCMD_BETA_Q         0x0000200   // beta |= Q
+#define UCMD_BETA_6         0x0000400   // beta |= 6
+#define UCMD_BETA_1         0x0000800   // beta |= 1
+
+#define UCMD_GAMMA_CARRY    0x0001000   // gamma |= carry
+#define UCMD_GAMMA_NCARRY   0x0002000   // gamma |= !carry
+#define UCMD_GAMMA_NKEY     0x0004000   // gamma |= !keypad_event
+
+#define UCMD_R_MASK         0x0038000   // mask for R operation
+#define UCMD_R_R3           0x0008000   // Ri := R[i+3]
+#define UCMD_R_SUM          0x0010000   // Ri := sum
+#define UCMD_R_S            0x0018000   // Ri := S
+#define UCMD_R_RSSUM        0x0020000   // Ri |= S | sum
+#define UCMD_R_SSUM         0x0028000   // Ri := S | sum
+#define UCMD_R_RS           0x0030000   // Ri |= S
+#define UCMD_R_RSUM         0x0038000   // Ri |= sum
+#define UCMD_R1_SUM         0x0040000   // R[i-1] := sum
+#define UCMD_R2_SUM         0x0080000   // R[i-2] := sum
+
+#define UCMD_M_S            0x0100000   // Mi := S
+
+#define UCMD_HOLD_CARRY     0x0200000   // hold carry bit
+
+#define UCMD_S_MASK         0x0c00000   // mask for S operation
+#define UCMD_S_Q            0x0400000   // S := Q
+#define UCMD_S_SUM          0x0800000   // S := sum
+#define UCMD_S_QSUM         0x0c00000   // S := Q | sum
+
+#define UCMD_Q_MASK         0x3000000   // mask for Q operation
+#define UCMD_Q_SUM          0x1000000   // Q := sum
+#define UCMD_Q_QSUM         0x3000000   // Q |= sum; poll keyboard
+
+#define UCMD_ST_SUM         0x4000000   // ST[i,+1,+2] := sum, STi, ST[i+1]
+#define UCMD_ST_ROT         0x8000000   // ST[i,+1,+2] := ST[i+1], ST[i+2], STi

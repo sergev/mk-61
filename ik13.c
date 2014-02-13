@@ -44,7 +44,7 @@ void plm_init (plm_t *t, const unsigned inst_rom[],
     t->input = 0;
     t->output = 0;
     t->S = 0;
-    t->S1 = 0;
+    t->Q = 0;
     t->carry = 0;
     t->keypad_event = 0;
     t->opcode = 0;
@@ -117,30 +117,27 @@ void plm_step (plm_t *t, unsigned cycle)
      * Execute the opcode.
      */
     unsigned alpha = 0, beta = 0, gamma = 0;
-    switch ((t->opcode >> 24) & 3) {
-    case 2:
-    case 3:
+    if ((t->opcode & UCMD_Q_MASK) == UCMD_Q_QSUM) {
         if (d != (t->keyb_x - 1) && t->keyb_y > 0)
-            t->S1 |= t->keyb_y;
-        break;
+            t->Q |= t->keyb_y;
     }
 
     /* Alpha. */
-    if (t->opcode & 1)    alpha |= t->R[cycle];
-    if (t->opcode & 2)    alpha |= t->M[cycle];
-    if (t->opcode & 4)    alpha |= t->ST[cycle];
-    if (t->opcode & 8)    alpha |= t->R[cycle] ^ 0xf;
-    if (t->opcode & 0x10
-        && ! t->carry)    alpha |= 0xa;
-    if (t->opcode & 0x20) alpha |= t->S;
-    if (t->opcode & 0x40) alpha |= 4;
+    if (t->opcode & UCMD_ALPHA_R)   alpha |= t->R[cycle];
+    if (t->opcode & UCMD_ALPHA_M)   alpha |= t->M[cycle];
+    if (t->opcode & UCMD_ALPHA_ST)  alpha |= t->ST[cycle];
+    if (t->opcode & UCMD_ALPHA_NR)  alpha |= t->R[cycle] ^ 0xf;
+    if (t->opcode & UCMD_ALPHA_C10
+        && ! t->carry)              alpha |= 0xa;
+    if (t->opcode & UCMD_ALPHA_S)   alpha |= t->S;
+    if (t->opcode & UCMD_ALPHA_4)   alpha |= 4;
 
     /* Beta. */
-    if (t->opcode & 0x80)  beta |= t->S;
-    if (t->opcode & 0x100) beta |= t->S ^ 0xf;
-    if (t->opcode & 0x200) beta |= t->S1;
-    if (t->opcode & 0x400) beta |= 6;
-    if (t->opcode & 0x800) beta |= 1;
+    if (t->opcode & UCMD_BETA_S)    beta |= t->S;
+    if (t->opcode & UCMD_BETA_NS)   beta |= t->S ^ 0xf;
+    if (t->opcode & UCMD_BETA_Q)    beta |= t->Q;
+    if (t->opcode & UCMD_BETA_6)    beta |= 6;
+    if (t->opcode & UCMD_BETA_1)    beta |= 1;
 
     /*
      * Poll keypad.
@@ -152,7 +149,7 @@ void plm_step (plm_t *t, unsigned cycle)
         t->enable_display = 1;
         if (d == (t->keyb_x - 1)) {
             if (t->keyb_y > 0) {
-                t->S1 = t->keyb_y;
+                t->Q = t->keyb_y;
                 t->keypad_event = 1;
             }
         }
@@ -162,17 +159,17 @@ void plm_step (plm_t *t, unsigned cycle)
     }
 
     /* Gamma. */
-    if (t->opcode & 0x1000) gamma |= t->carry;
-    if (t->opcode & 0x2000) gamma |= t->carry ^ 1;
-    if (t->opcode & 0x4000) gamma |= t->keypad_event ^ 1;
+    if (t->opcode & UCMD_GAMMA_CARRY)   gamma |= t->carry;
+    if (t->opcode & UCMD_GAMMA_NCARRY)  gamma |= t->carry ^ 1;
+    if (t->opcode & UCMD_GAMMA_NKEY)    gamma |= t->keypad_event ^ 1;
 
     /*
-     * Update carry bit.
+     * Compute sum and carry.
      */
     unsigned sum = alpha + beta + gamma;
-    unsigned sigma = sum & 0xf;
-    if ((t->opcode >> 21) & 1)
+    if (t->opcode & UCMD_HOLD_CARRY)
         t->carry = (sum >> 4) & 1;
+    sum &= 0xf;
 
     if (modifier == 0 || cycle >= 36) {
         /*
@@ -188,40 +185,45 @@ void plm_step (plm_t *t, unsigned cycle)
         if (cycle_minus_2 >= REG_NWORDS)
             cycle_minus_2 -= REG_NWORDS;
 
-        switch ((t->opcode >> 15) & 7) {
-        case 1: t->R[cycle] = t->R[cycle_plus_3];           break;
-        case 2: t->R[cycle] = sigma;                        break;
-        case 3: t->R[cycle] = t->S;                         break;
-        case 4: t->R[cycle] = t->R[cycle] | t->S | sigma;   break;
-        case 5: t->R[cycle] = t->S | sigma;                 break;
-        case 6: t->R[cycle] = t->R[cycle] | t->S;           break;
-        case 7: t->R[cycle] = t->R[cycle] | sigma;          break;
+        switch (t->opcode & UCMD_R_MASK) {
+        case UCMD_R_R3:     t->R[cycle]  = t->R[cycle_plus_3];  break;
+        case UCMD_R_SUM:    t->R[cycle]  = sum;                 break;
+        case UCMD_R_S:      t->R[cycle]  = t->S;                break;
+        case UCMD_R_RSSUM:  t->R[cycle] |= t->S | sum;          break;
+        case UCMD_R_SSUM:   t->R[cycle]  = t->S | sum;          break;
+        case UCMD_R_RS:     t->R[cycle] |= t->S;                break;
+        case UCMD_R_RSUM:   t->R[cycle] |= sum;                 break;
         }
-        if ((t->opcode >> 18) & 1) t->R[cycle_minus_1] = sigma;
-        if ((t->opcode >> 19) & 1) t->R[cycle_minus_2] = sigma;
+        if (t->opcode & UCMD_R1_SUM) t->R[cycle_minus_1] = sum;
+        if (t->opcode & UCMD_R2_SUM) t->R[cycle_minus_2] = sum;
     }
 
     /*
      * Update M register.
      */
-    if ((t->opcode >> 20) & 1)
+    if (t->opcode & UCMD_M_S)
         t->M[cycle] = t->S;
 
-    switch ((t->opcode >> 22) & 3) {
-    case 1: t->S = t->S1;           break;
-    case 2: t->S = sigma;           break;
-    case 3: t->S = t->S1 | sigma;   break;
+    /*
+     * Update S register.
+     */
+    switch (t->opcode & UCMD_S_MASK) {
+    case UCMD_S_Q:      t->S = t->Q;        break;
+    case UCMD_S_SUM:    t->S = sum;         break;
+    case UCMD_S_QSUM:   t->S = t->Q | sum;  break;
     }
-    switch ((t->opcode >> 24) & 3) {
-    case 1: t->S1 = sigma;          break;
-    case 2: t->S1 = t->S1;          break;
-    case 3: t->S1 |= sigma;         break;
+
+    /*
+     * Update Q register.
+     */
+    switch (t->opcode & UCMD_Q_MASK) {
+    case UCMD_Q_SUM:    t->Q = sum;     break;
+    case UCMD_Q_QSUM:   t->Q |= sum;    break;
     }
 
     /*
      * Update ST register.
      */
-    unsigned x, y, z;
     unsigned cycle_plus_1 = cycle + 1;
     unsigned cycle_plus_2 = cycle + 2;
     if (cycle_plus_1 >= REG_NWORDS)
@@ -229,26 +231,16 @@ void plm_step (plm_t *t, unsigned cycle)
     if (cycle_plus_2 >= REG_NWORDS)
         cycle_plus_2 -= REG_NWORDS;
 
-    switch ((t->opcode >> 26) & 3) {
-    case 1:
+    if (t->opcode & UCMD_ST_SUM) {
         t->ST[cycle_plus_2] = t->ST[cycle_plus_1];
         t->ST[cycle_plus_1] = t->ST[cycle];
-        t->ST[cycle]        = sigma;
-        break;
-    case 2:
-        x = t->ST[cycle];
+        t->ST[cycle]        = sum;
+    }
+    if (t->opcode & UCMD_ST_ROT) {
+        unsigned x = t->ST[cycle];
         t->ST[cycle]        = t->ST[cycle_plus_1];
         t->ST[cycle_plus_1] = t->ST[cycle_plus_2];
         t->ST[cycle_plus_2] = x;
-        break;
-    case 3:
-        x = t->ST[cycle];
-        y = t->ST[cycle_plus_1];
-        z = t->ST[cycle_plus_2];
-        t->ST[cycle]        = sigma | y;
-        t->ST[cycle_plus_1] = x | z;
-        t->ST[cycle_plus_2] = y | x;
-        break;
     }
 
     /*
