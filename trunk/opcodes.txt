@@ -5,12 +5,14 @@ Microinstruction bits
     0x0000004   UCMD_ALPHA_ST       alpha |= STi
     0x0000008   UCMD_ALPHA_NR       alpha |= ~Ri
     0x0000010   UCMD_ALPHA_C10      if (carry==0) alpha |= 10
+    0x0000020   UCMD_ALPHA_S        alpha |= S
     0x0000040   UCMD_ALPHA_4        alpha |= 4
 
     0x0000080   UCMD_BETA_S         beta |= S
     0x0000100   UCMD_BETA_NS        beta |= ~S
     0x0000200   UCMD_BETA_Q         beta |= Q
     0x0000400   UCMD_BETA_6         beta |= 6
+    0x0000800   UCMD_BETA_1         beta |= 1
 
     0x0001000   UCMD_GAMMA_CARRY    gamma |= carry
     0x0002000   UCMD_GAMMA_NCARRY   gamma |= !carry
@@ -36,9 +38,8 @@ Microinstruction bits
     0x0800000   UCMD_S_SUM          S := sum
     0x0c00000   UCMD_S_QSUM         S := Q | sum
 
-    0x3000000   UCMD_Q_MASK         mask for Q operation
     0x1000000   UCMD_Q_SUM          Q := sum
-    0x3000000   UCMD_Q_QSUM         Q |= poll keypad; Q |= sum
+    0x2000000   UCMD_KEYPAD         Q := poll_keypad()
 
     0x4000000   UCMD_ST_SUM         ST[i,+1,+2] := sum, STi, ST[i+1]
     0x8000000   UCMD_ST_ROT         ST[i,+1,+2] := ST[i+1], ST[i+2], STi
@@ -81,127 +82,132 @@ Microinstruction opcodes
 
     0x0140002   R[i-1] := Mi; Mi := S
 
-    0x0200088
-    0x0200090
-    0x0200540
-    0x0200808
-    0x0200809
-    0x0201089
-    0x0201100
-    0x0201420
-    0x0203081
-    0x0203088
-    0x0203090
-    0x0203100
-    0x0203420
-    0x0203C08
-    0x0210081
-    0x0210801
-    0x0212801
-    0x0213201
-    0x0213801
+    0x0200088   carry := carry(~Ri + S)
+    0x0200090   carry := carry ? 0 : carry(S + 10)
+    0x0200540   carry := carry(~S + 10)
+    0x0200808   carry := carry(~Ri + 1)
+    0x0200809   carry := 1
+    0x0201089   carry := carry(S + carry + 15)
+    0x0201100   carry := carry(~S + carry)
+    0x0201420   carry := carry(S + carry + 6)
+    0x0203081   carry := carry(Ri + S + 1)
+    0x0203088   carry := carry(~Ri + S + 1)
+    0x0203090   carry := carry(S + (carry ? 1 : 11))
+    0x0203100   carry := carry(~S + 1)
+    0x0203420   carry := carry(S + 7)
+    0x0203C08   carry := carry(~Ri + 8)
+
+    0x0210081   Ri += S;         carry := carry(Ri + S)
+    0x0210801   Ri += 1;         carry := carry(Ri + 1)
+    0x0212801   Ri += 2 - carry; carry := carry(Ri + 2 - carry)
+    0x0213201   Ri += Q + 1;     carry := carry(Ri + Q + 1)
+    0x0213801   Ri += 2;         carry := carry(Ri + 2)
 
     0x0400000   S := Q
+    0x0600081   S := Q; carry := carry(Ri + S)
+    0x0601209   S := Q; carry := carry(Q + carry + 15)
+    0x0800000   S := 0
+    0x0800001   S := Ri
+    0x0800002   S := Mi
+    0x0800004   S := STi
+    0x0800005   S := Ri | STi
+    0x0800008   S := ~Ri
+    0x0800021   S := Ri | S
+    0x0800040   S := 4
+    0x0800081   S += Ri
+    0x08000C0   S += 4
+    0x0800100   S := ~S
+    0x0800120   S := 15
+    0x0800180   S := 15
+    0x08001C0   S := 3
+    0x0800280   S |= Q
+    0x0800400   S := 6
+    0x0800401   S := Ri + 6
+    0x0800420   S += 6
+    0x0800800   S := 1
+    0x0800801   S := Ri + 1
+    0x0800820   S += 1
+    0x0800840   S := 5
+    0x0801000   S := carry
+    0x0801001   S := Ri + carry
+    0x0801020   S += carry
+    0x0801190   S := carry ? 0 : 9
+    0x0803400   S := 7
+    0x0803800   S := 2
 
-    0x0600081
-    0x0601209
+    0x0808001   S := Ri; Ri := R[i+3]
+    0x0810002   S := Ri := Mi
+    0x0810081   S := Ri := Ri + S
+    0x0818001   S := Ri; Ri := old S
+    0x0818180   Ri := S; S := 15
+    0x0840020   S := R[i-1] := S        (S not changed?)
+    0x0840090   S := R[i-1] := carry ? S : S+10
+    0x0840801   S := R[i-1] := Ri + 1
+    0x0841020   S := R[i-1] := S + carry
+    0x0858001   S := R[i-1] := Ri; Ri := S
+    0x0880090   S := R[i-2] := carry ? S : S+10
 
-    0x0800000
-    0x0800001
-    0x0800002
-    0x0800004
-    0x0800005
-    0x0800008
-    0x0800021
-    0x0800040
-    0x0800081
-    0x08000C0
-    0x0800100
-    0x0800120
-    0x0800180
-    0x08001C0
-    0x0800280
-    0x0800400
-    0x0800401
-    0x0800420
-    0x0800800
-    0x0800801
-    0x0800820
-    0x0800840
-    0x0801000
-    0x0801001
-    0x0801020
-    0x0801190
-    0x0803400
-    0x0803800
-    0x0808001
-    0x0810002
-    0x0810081
-    0x0818001
-    0x0818180
-    0x0840020
-    0x0840090
-    0x0840801
-    0x0841020
-    0x0858001
-    0x0880090
+    0x0900001   Mi := S: S := Ri
 
-    0x0900001
+    0x0A00028   S |= ~Ri;            carry := 0
+    0x0A00081   S += Ri;             carry := carry(S + Ri)
+    0x0A00082   S += Mi;             carry := carry(S + Mi)
+    0x0A00088   S += ~Ri;            carry := carry(S + ~Ri)
+    0x0A00089   S += 15;             carry := carry(S + 15)
+    0x0A00090   S += carry ? 0 : 10; carry := carry(S + (carry ? 0 : 10))
+    0x0A00101   S := ~S + Ri;        carry := carry(~S + Ri)
+    0x0A00180   S := 15;             carry := 0
+    0x0A00181   S := Ri + 15;        carry := carry(Ri + 15)
+    0x0A00220   S += Q;              carry := carry(S + Q)
+    0x0A00808   S += ~Ri + 1;        carry := carry(~Ri + 1)
+    0x0A00820   S += 1;              carry := carry(S + 1)
+    0x0A01001   S := Ri + carry;     carry := carry(Ri + carry)
+    0x0A01008   S := ~Ri + carry;    carry := carry(~Ri + carry)
+    0x0A01020   S += carry;          carry := carry(S + carry)
+    0x0A01081   S += Ri + carry;     carry := carry(S + Ri + carry)
+    0x0A010A0   S += S + carry;      carry := carry(S + S + carry)
+    0x0A01181   S := Ri + carry + 15; carry := carry(Ri + carry + 15)
+    0x0A03081   S += Ri + 1;         carry := carry(S + Ri + 1)
+    0x0A03120   S := 0;              carry := 1
+    0x0A03180   S := 0;              carry := 1
+    0x0A03C20   S += 8;              carry := carry(S + 8)
+    0x0A04020   S += !keypad_event;  carry := carry(S + !keypad_event)
 
-    0x0A00028
-    0x0A00081
-    0x0A00082
-    0x0A00088
-    0x0A00089
-    0x0A00090
-    0x0A00101
-    0x0A00180
-    0x0A00181
-    0x0A00220
-    0x0A00808
-    0x0A00820
-    0x0A01001
-    0x0A01008
-    0x0A01020
-    0x0A01081
-    0x0A010A0
-    0x0A01181
-    0x0A03081
-    0x0A03120
-    0x0A03180
-    0x0A03C20
-    0x0A04020
-    0x0A10181
-    0x0A10801
-    0x0A11801
+    0x0A10181   Ri += 15;        S := Ri; carry := carry(Ri + 15)
+    0x0A10801   Ri += 1;         S := Ri; carry := carry(Ri + 1)
+    0x0A11801   Ri += carry + 1; S := Ri; carry := carry(Ri + carry + 1)
 
-    0x1000000
-    0x1000001
-    0x1000180
-    0x1000208
-    0x1001280
-    0x1002200
-    0x1008001
-    0x1200209
-    0x1200801
-    0x1203200
-    0x1400020
-    0x1418001
-    0x1440090
-    0x1801200
-    0x1A00220
+    0x1000000   Q := 0
+    0x1000001   Q := Ri
+    0x1000180   Q := 15
+    0x1000208   Q += ~Ri
+    0x1001280   Q := (S | Q) + carry
+    0x1002200   Q += !carry
+    0x1008001   Q := Ri;        Ri := R[i+3]
+    0x1200209   Q += 15;        carry := carry(Q + 15)
+    0x1200801   Q := Ri + 1;    carry := carry(Ri + 1)
+    0x1203200   Q += 1;         carry := carry(Q + 1)
 
-    0x3200209  poll keypad
+    0x1400020   S := Q;     Q := old S
 
-    0x4000001
-    0x4000020
-    0x4000100
-    0x4018001
-    0x4018801
-    0x4800001
-    0x4800801
-    0x4810002
+    0x1418001   Ri := S;    S := Q;     Q := old Ri
 
-    0x8010004
-    0x8241004
-    0x8800004
+    0x1440090   S := Q;     R[i-1] := Q := old S + (carry ? 0 : 10)
+
+    0x1801200   S := Q := Q + carry;
+    0x1A00220   S := Q := S + Q + carry;    carry := carry(S + Q + carry)
+
+    0x3200209   Q := poll_keypad() + 15;    carry := carry(poll_keypad() + 15)
+
+    0x4000001   ST[i,+1,+2] := Ri,     STi, ST[i+1]
+    0x4000020   ST[i,+1,+2] := S,      STi, ST[i+1]
+    0x4000100   ST[i,+1,+2] := ~S,     STi, ST[i+1]
+    0x4018001   ST[i,+1,+2] := Ri,     STi, ST[i+1];    Ri := S
+    0x4018801   ST[i,+1,+2] := Ri + 1, STi, ST[i+1];    Ri := S
+    0x4800001   ST[i,+1,+2] := Ri,     STi, ST[i+1];    S := Ri
+    0x4800801   ST[i,+1,+2] := Ri + 1, STi, ST[i+1];    S := Ri + 1
+    0x4810002   ST[i,+1,+2] := Mi,     STi, ST[i+1];    Ri := Mi;   S := Mi
+
+    0x8010004   Ri := STi;                                              ST[i,+1,+2] := ST[i+1], ST[i+2], STi
+    0x8241004   R[i-1] := STi + carry;  carry := carry(STi + carry);    ST[i,+1,+2] := ST[i+1], ST[i+2], STi
+    0x8800004   S := STi;                                               ST[i,+1,+2] := ST[i+1], ST[i+2], STi

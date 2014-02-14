@@ -223,9 +223,8 @@ void calc_write_code (unsigned char code[]);
 #define UCMD_S_SUM          0x0800000   // S := sum
 #define UCMD_S_QSUM         0x0c00000   // S := Q | sum
 
-#define UCMD_Q_MASK         0x3000000   // mask for Q operation
 #define UCMD_Q_SUM          0x1000000   // Q := sum
-#define UCMD_Q_QSUM         0x3000000   // Q |= poll keypad; Q |= sum
+#define UCMD_KEYPAD         0x2000000   // Q := poll_keypad()
 
 #define UCMD_ST_SUM         0x4000000   // ST[i,+1,+2] := sum, STi, ST[i+1]
 #define UCMD_ST_ROT         0x8000000   // ST[i,+1,+2] := ST[i+1], ST[i+2], STi
