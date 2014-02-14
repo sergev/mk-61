@@ -117,9 +117,9 @@ void plm_step (plm_t *t, unsigned cycle)
      * Execute the opcode.
      */
     unsigned alpha = 0, beta = 0, gamma = 0;
-    if ((t->opcode & UCMD_Q_MASK) == UCMD_Q_QSUM) {
+    if (t->opcode & UCMD_KEYPAD) {
         if (d != (t->keyb_x - 1) && t->keyb_y > 0)
-            t->Q |= t->keyb_y;
+            t->Q = t->keyb_y;
     }
 
     /* Alpha. */
@@ -216,10 +216,8 @@ void plm_step (plm_t *t, unsigned cycle)
     /*
      * Update Q register.
      */
-    switch (t->opcode & UCMD_Q_MASK) {
-    case UCMD_Q_SUM:    t->Q = sum;     break;
-    case UCMD_Q_QSUM:   t->Q |= sum;    break;
-    }
+    if (t->opcode & UCMD_Q_SUM)
+        t->Q = sum;
 
     /*
      * Update ST register.

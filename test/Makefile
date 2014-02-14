@@ -17,6 +17,10 @@ $(PROG):        $(OBJS)
 clean:
 		rm -f $(PROG) *.o *~ a.out
 
+run:            test test.log
+		./test > log
+		@diff -q log test.log && echo Test PASSED.
+
 ###
 ik13.o: ik13.c calc.h
 ir2.o: ir2.c calc.h
