@@ -189,7 +189,7 @@ void calc_write_code (unsigned char code[]);
 #define UCMD_ALPHA_M        0x0000002   // alpha |= Mi
 #define UCMD_ALPHA_ST       0x0000004   // alpha |= STi
 #define UCMD_ALPHA_NR       0x0000008   // alpha |= ~Ri
-#define UCMD_ALPHA_C10      0x0000010   // if (! carry) alpha |= 10
+#define UCMD_ALPHA_C10      0x0000010   // if (carry == 0) alpha |= 10
 #define UCMD_ALPHA_S        0x0000020   // alpha |= S
 #define UCMD_ALPHA_4        0x0000040   // alpha |= 4
 
@@ -216,7 +216,7 @@ void calc_write_code (unsigned char code[]);
 
 #define UCMD_M_S            0x0100000   // Mi := S
 
-#define UCMD_HOLD_CARRY     0x0200000   // hold carry bit
+#define UCMD_CARRY_SUM      0x0200000   // carry := carry bit of sum
 
 #define UCMD_S_MASK         0x0c00000   // mask for S operation
 #define UCMD_S_Q            0x0400000   // S := Q
@@ -225,7 +225,7 @@ void calc_write_code (unsigned char code[]);
 
 #define UCMD_Q_MASK         0x3000000   // mask for Q operation
 #define UCMD_Q_SUM          0x1000000   // Q := sum
-#define UCMD_Q_QSUM         0x3000000   // Q |= sum; poll keyboard
+#define UCMD_Q_QSUM         0x3000000   // Q |= poll keypad; Q |= sum
 
 #define UCMD_ST_SUM         0x4000000   // ST[i,+1,+2] := sum, STi, ST[i+1]
 #define UCMD_ST_ROT         0x8000000   // ST[i,+1,+2] := ST[i+1], ST[i+2], STi

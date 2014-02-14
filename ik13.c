@@ -167,7 +167,7 @@ void plm_step (plm_t *t, unsigned cycle)
      * Compute sum and carry.
      */
     unsigned sum = alpha + beta + gamma;
-    if (t->opcode & UCMD_HOLD_CARRY)
+    if (t->opcode & UCMD_CARRY_SUM)
         t->carry = (sum >> 4) & 1;
     sum &= 0xf;
 

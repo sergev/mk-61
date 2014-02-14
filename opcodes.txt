@@ -1,0 +1,207 @@
+Microinstruction bits
+~~~~~~~~~~~~~~~~~~~~~
+    0x0000001   UCMD_ALPHA_R        alpha |= Ri
+    0x0000002   UCMD_ALPHA_M        alpha |= Mi
+    0x0000004   UCMD_ALPHA_ST       alpha |= STi
+    0x0000008   UCMD_ALPHA_NR       alpha |= ~Ri
+    0x0000010   UCMD_ALPHA_C10      if (carry==0) alpha |= 10
+    0x0000040   UCMD_ALPHA_4        alpha |= 4
+
+    0x0000080   UCMD_BETA_S         beta |= S
+    0x0000100   UCMD_BETA_NS        beta |= ~S
+    0x0000200   UCMD_BETA_Q         beta |= Q
+    0x0000400   UCMD_BETA_6         beta |= 6
+
+    0x0001000   UCMD_GAMMA_CARRY    gamma |= carry
+    0x0002000   UCMD_GAMMA_NCARRY   gamma |= !carry
+    0x0004000   UCMD_GAMMA_NKEY     gamma |= !keypad_event
+
+    0x0038000   UCMD_R_MASK         mask for R operation
+    0x0008000   UCMD_R_R3           Ri := R[i+3]
+    0x0010000   UCMD_R_SUM          Ri := sum
+    0x0018000   UCMD_R_S            Ri := S
+    0x0020000   UCMD_R_RSSUM        Ri |= S | sum
+    0x0028000   UCMD_R_SSUM         Ri := S | sum
+    0x0030000   UCMD_R_RS           Ri |= S
+    0x0038000   UCMD_R_RSUM         Ri |= sum
+    0x0040000   UCMD_R1_SUM         R[i-1] := sum
+    0x0080000   UCMD_R2_SUM         R[i-2] := sum
+
+    0x0100000   UCMD_M_S            Mi := S
+
+    0x0200000   UCMD_CARRY_SUM      carry := carry(sum)
+
+    0x0c00000   UCMD_S_MASK         mask for S operation
+    0x0400000   UCMD_S_Q            S := Q
+    0x0800000   UCMD_S_SUM          S := sum
+    0x0c00000   UCMD_S_QSUM         S := Q | sum
+
+    0x3000000   UCMD_Q_MASK         mask for Q operation
+    0x1000000   UCMD_Q_SUM          Q := sum
+    0x3000000   UCMD_Q_QSUM         Q |= poll keypad; Q |= sum
+
+    0x4000000   UCMD_ST_SUM         ST[i,+1,+2] := sum, STi, ST[i+1]
+    0x8000000   UCMD_ST_ROT         ST[i,+1,+2] := ST[i+1], ST[i+2], STi
+
+
+Microinstruction opcodes
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+    0x0000000   nop
+
+    0x0008000   Ri := R[i+3]
+    0x0010000   Ri := 0
+    0x0010020   Ri := S
+    0x0010100   Ri := ~S
+    0x0010200   Ri := Q
+    0x0010801   Ri += 1
+    0x0011001   Ri += carry
+    0x0011190   Ri := carry ? 0 : 9
+    0x0011801   Ri += carry + 1
+    0x0013081   Ri += S + 1
+    0x0013C01   Ri += 8
+
+    0x0040000   R[i-1] := 0
+    0x0040001   R[i-1] := Ri
+    0x0040002   R[i-1] := Mi
+    0x0040020   R[i-1] := S
+    0x0040090   R[i-1] := carry ? S : S+10
+    0x0040100   R[i-1] := ~S
+
+    0x0058001   R[i-1] := Ri; Ri := S
+
+    0x0080001   R[i-2] := Ri
+    0x0080020   R[i-2] := S
+    0x0080820   R[i-2] := S + 1
+    0x0083100   R[i-2] := ~S + 1
+
+    0x0098001   R[i-2] := Ri; Ri := S
+
+    0x0100000   Mi := S
+
+    0x0140002   R[i-1] := Mi; Mi := S
+
+    0x0200088
+    0x0200090
+    0x0200540
+    0x0200808
+    0x0200809
+    0x0201089
+    0x0201100
+    0x0201420
+    0x0203081
+    0x0203088
+    0x0203090
+    0x0203100
+    0x0203420
+    0x0203C08
+    0x0210081
+    0x0210801
+    0x0212801
+    0x0213201
+    0x0213801
+
+    0x0400000   S := Q
+
+    0x0600081
+    0x0601209
+
+    0x0800000
+    0x0800001
+    0x0800002
+    0x0800004
+    0x0800005
+    0x0800008
+    0x0800021
+    0x0800040
+    0x0800081
+    0x08000C0
+    0x0800100
+    0x0800120
+    0x0800180
+    0x08001C0
+    0x0800280
+    0x0800400
+    0x0800401
+    0x0800420
+    0x0800800
+    0x0800801
+    0x0800820
+    0x0800840
+    0x0801000
+    0x0801001
+    0x0801020
+    0x0801190
+    0x0803400
+    0x0803800
+    0x0808001
+    0x0810002
+    0x0810081
+    0x0818001
+    0x0818180
+    0x0840020
+    0x0840090
+    0x0840801
+    0x0841020
+    0x0858001
+    0x0880090
+
+    0x0900001
+
+    0x0A00028
+    0x0A00081
+    0x0A00082
+    0x0A00088
+    0x0A00089
+    0x0A00090
+    0x0A00101
+    0x0A00180
+    0x0A00181
+    0x0A00220
+    0x0A00808
+    0x0A00820
+    0x0A01001
+    0x0A01008
+    0x0A01020
+    0x0A01081
+    0x0A010A0
+    0x0A01181
+    0x0A03081
+    0x0A03120
+    0x0A03180
+    0x0A03C20
+    0x0A04020
+    0x0A10181
+    0x0A10801
+    0x0A11801
+
+    0x1000000
+    0x1000001
+    0x1000180
+    0x1000208
+    0x1001280
+    0x1002200
+    0x1008001
+    0x1200209
+    0x1200801
+    0x1203200
+    0x1400020
+    0x1418001
+    0x1440090
+    0x1801200
+    0x1A00220
+
+    0x3200209  poll keypad
+
+    0x4000001
+    0x4000020
+    0x4000100
+    0x4018001
+    0x4018801
+    0x4800001
+    0x4800801
+    0x4810002
+
+    0x8010004
+    0x8241004
+    0x8800004
