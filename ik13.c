@@ -101,9 +101,8 @@ void plm_step (plm_t *t, unsigned cycle)
      * Fetch the instruction opcode.
      */
     const unsigned char remap[42] = {
-        0, 1, 2, 3, 4, 5, 3, 4, 5, 3, 4, 5, 3, 4,
-        5, 3, 4, 5, 3, 4, 5, 3, 4, 5, 6, 7, 8, 0,
-        1, 2, 3, 4, 5, 6, 7, 8, 0, 1, 2, 3, 4, 5,
+        0,1,2,  3,4,5,  3,4,5,  3,4,5,  3,4,5,  3,4,5,  3,4,5,
+        3,4,5,  6,7,8,  0,1,2,  3,4,5,  6,7,8,  0,1,2,  3,4,5,
     };
     unsigned inst_addr = t->prog_rom[prog_index*9 + remap[cycle]] & 0x3f;
     if (inst_addr >= 60) {
