@@ -7,7 +7,7 @@ VPATH           = ..
 #
 # Select MK-61 (default) or MK-64.
 #
-CFLAGS          += -DMK_54
+#CFLAGS          += -DMK_54
 
 all:		$(PROG)
 
