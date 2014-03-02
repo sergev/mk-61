@@ -264,24 +264,38 @@ int scan_keys (int row)
         KEY_STOPGO, //  C/П x!=0
         0,
     };
+    static int radians_flag;
+
     int porta = PORTA;
     int portb = PORTB;
+    int kp_a = portb & PIN(2);  // RB2 - keypad A
+    int kp_b = porta & PIN(1);  // RA1 - keypad B
+    int kp_c = portb & PIN(7);  // RB7 - keypad C
+    int kp_d = portb & PIN(8);  // RB8 - keypad D
+    int kp_e = portb & PIN(9);  // RB9 - keypad E
 
     // Poll radians/grads/degrees switch
-    if (portb & PIN(9)) {   // RB9 - keypad E
-        switch (row) {
-        case 0: rgd = MODE_RADIANS; break;
-        case 7: rgd = MODE_DEGREES; break;
-        }
+    switch (row) {
+    case 0:
+        radians_flag = kp_e;
+        break;
+    case 7:
+        if (kp_e)
+            rgd = MODE_DEGREES;
+        else if (radians_flag)
+            rgd = MODE_RADIANS;
+        else
+            rgd = MODE_GRADS;
+        break;
     }
 
-    if (portb & PIN(2))     // RB2 - keypad A
+    if (kp_a)
         return col_a[row];
-    if (porta & PIN(1))     // RA1 - keypad B
+    if (kp_b)
         return col_b[row];
-    if (portb & PIN(7))     // RB7 - keypad C
+    if (kp_c)
         return col_c[row];
-    if (portb & PIN(8))     // RB8 - keypad D
+    if (kp_d)
         return col_d[row];
     return 0;
 }
