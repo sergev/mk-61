@@ -47,6 +47,8 @@
  */
 #define PIN(n)  (1 << (n))
 
+#define FLASH_BASE          (0x9d000000 + 32*1024 - 1024)
+
 /*
  * Chip configuration.
  */
@@ -56,13 +58,18 @@ PIC32_DEVCFG (
 
     DEVCFG1_FNOSC_PRIPLL |      /* Primary oscillator with PLL */
     DEVCFG1_POSCMOD_HS |        /* HS oscillator */
-    DEVCFG1_OSCIOFNC_OFF |      /* CLKO output disabled */
     DEVCFG1_FPBDIV_4 |          /* Peripheral bus clock = SYSCLK/4 */
+    DEVCFG1_OSCIOFNC_OFF |      /* CLKO output disabled */
     DEVCFG1_FCKM_DISABLE,       /* Fail-safe clock monitor disable */
 
+#ifdef CRYSTAL_12MHZ
     DEVCFG2_FPLLIDIV_3 |        /* PLL divider = 1/3 */
-    DEVCFG2_FPLLMUL_24 |        /* PLL multiplier = 24x */
+#else
+    /* Crystal 8 MHz. */
+    DEVCFG2_FPLLIDIV_2 |        /* PLL divider = 1/2 */
+#endif
     DEVCFG2_UPLLDIS |           /* Disable USB PLL */
+    DEVCFG2_FPLLMUL_24 |        /* PLL multiplier = 24x */
     DEVCFG2_FPLLODIV_2,         /* PLL postscaler = 1/2 */
 
     DEVCFG3_USERID(0xffff));    /* User-defined ID */
@@ -173,6 +180,10 @@ static inline void data (int on)
 static unsigned rgd;                    // Radians/grads/degrees
 static unsigned keycode;                // Code of pressed button
 static unsigned key_pressed;            // Bitmask of active key
+static unsigned char prog[CODE_NBYTES]; // Program code
+static unsigned char new_prog[CODE_NBYTES]; // New program code
+static int new_prog_flag;               // New program received
+static int flash_save_flag;             // Need to save to flash memory
 
 /*
  * Poll keypad: input pins RD4-RD7.
@@ -219,24 +230,38 @@ int scan_keys (int row)
         KEY_STOPGO, //  C/П x!=0
         0,
     };
+    static int radians_flag;
+
     int porta = PORTA;
     int portb = PORTB;
+    int kp_a = portb & PIN(2);  // RB2 - keypad A
+    int kp_b = porta & PIN(1);  // RA1 - keypad B
+    int kp_c = portb & PIN(7);  // RB7 - keypad C
+    int kp_d = portb & PIN(8);  // RB8 - keypad D
+    int kp_e = portb & PIN(9);  // RB9 - keypad E
 
     // Poll radians/grads/degrees switch
-    if (portb & PIN(9)) {   // RB9 - keypad E
-        switch (row) {
-        case 0: rgd = MODE_RADIANS; break;
-        case 7: rgd = MODE_DEGREES; break;
-        }
+    switch (row) {
+    case 0:
+        radians_flag = kp_e;
+        break;
+    case 7:
+        if (kp_e)
+            rgd = MODE_DEGREES;
+        else if (radians_flag)
+            rgd = MODE_RADIANS;
+        else
+            rgd = MODE_GRADS;
+        break;
     }
 
-    if (portb & PIN(2))     // RB2 - keypad A
+    if (kp_a)
         return col_a[row];
-    if (porta & PIN(1))     // RA1 - keypad B
+    if (kp_b)
         return col_b[row];
-    if (portb & PIN(7))     // RB7 - keypad C
+    if (kp_c)
         return col_c[row];
-    if (portb & PIN(8))     // RB8 - keypad D
+    if (kp_d)
         return col_d[row];
     return 0;
 }
@@ -290,6 +315,127 @@ int calc_keypad()
     return keycode;
 }
 
+/*
+ * Copy an array.
+ */
+void memcopy (void *from, void *to, unsigned nbytes)
+{
+    unsigned char *src = (unsigned char*) from;
+    unsigned char *dst = (unsigned char*) to;
+
+    while (nbytes-- > 0)
+        *dst++ = *src++;
+}
+
+/*
+ * Poll the USB port.
+ */
+void calc_poll()
+{
+    /* Empty */
+}
+
+/*
+ * Perform non-volatile memory operation.
+ */
+static void nvm_operation (unsigned op, unsigned address, unsigned data)
+{
+    int i;
+
+    // Convert virtual address to physical
+    NVMADDR = address & 0x1fffffff;
+    NVMDATA = data;
+
+    // Enable Flash Write/Erase Operations
+    NVMCON = PIC32_NVMCON_WREN | op;
+
+    // Data sheet prescribes 6us delay for LVD to become stable.
+    // To be on the safer side, we shall set 7us delay.
+    for (i=0; i<7*48/8; i++) {
+        /* 8 clocks per cycle */
+        asm volatile ("nop");
+        asm volatile ("nop");
+        asm volatile ("nop");
+        asm volatile ("nop");
+        asm volatile ("nop");
+        /* gcc adds three extra instructions */
+    }
+
+    NVMKEY = 0xAA996655;
+    NVMKEY = 0x556699AA;
+    NVMCONSET = PIC32_NVMCON_WR;
+
+    // Wait for WR bit to clear
+    while (NVMCON & PIC32_NVMCON_WR)
+        continue;
+
+    // Disable Flash Write/Erase operations
+    NVMCONCLR = PIC32_NVMCON_WREN;
+}
+
+/*
+ * Check that a program is available in flash memory.
+ */
+int prog_available()
+{
+    const unsigned char *ptr = (const unsigned char*) FLASH_BASE;
+    int i;
+
+    for (i=0; i<CODE_NBYTES; i++)
+        if (*ptr++ != 0xff)
+            return 1;
+    return 0;
+}
+
+/*
+ * Check that the program has been modified by user.
+ */
+int prog_modified()
+{
+    const unsigned char *ptr = (const unsigned char*) FLASH_BASE;
+    int i;
+
+    for (i=0; i<CODE_NBYTES; i++)
+        if (*ptr++ != prog[i])
+            return 1;
+    return 0;
+}
+
+/*
+ * Read a program from flash memory.
+ */
+void restore_prog()
+{
+    void *flash = (void*) FLASH_BASE;
+
+    memcopy (flash, new_prog, CODE_NBYTES);
+}
+
+/*
+ * Write a program to flash memory.
+ */
+void save_prog()
+{
+    int i;
+
+#if 1
+    // DEBUG: set segments to visualize the operation.
+    TRISBCLR = PIN(0) | PIN(1) | PIN(3) | PIN(4) |
+               PIN(13) | PIN(14) | PIN(15);
+    TRISACLR = PIN(4);
+#endif
+    /* Erase flash page. */
+    nvm_operation (PIC32_NVMCON_PAGE_ERASE, FLASH_BASE, 0);
+
+    for (i=0; i<CODE_NBYTES; i+=4) {
+        /* Write word to flash memory. */
+        unsigned word = prog[i] | prog[i+1] << 8 |
+                        prog[i+2] << 16 | prog[i+3] << 24;
+        nvm_operation (PIC32_NVMCON_WORD_PGM, FLASH_BASE + i, word);
+    }
+    clear_segments();
+}
+
 int main()
 {
     /* Initialize coprocessor 0. */
@@ -300,8 +446,20 @@ int main()
     mtc0 (C0_CAUSE, 0, 1 << 23);        /* Set IV */
     mtc0 (C0_STATUS, 0, 0);             /* Clear BEV */
 
-    /* Disable JTAG and Trace ports, to make more pins available. */
-    DDPCONCLR = 3 << 2;
+    /* Copy the .data image from flash to ram.
+     * Linker places it at the end of .text segment. */
+    extern void _etext();
+    extern unsigned __data_start, _edata;
+    unsigned *src = (unsigned*) &_etext;
+    unsigned *dest = &__data_start;
+    while (dest < &_edata)
+        *dest++ = *src++;
+
+    /* Initialize .bss segment by zeroes. */
+    extern unsigned _end;
+    dest = &_edata;
+    while (dest < &_end)
+        *dest++ = 0;
 
     /* Use all ports as digital. */
     ANSELA = 0;
@@ -335,11 +493,43 @@ int main()
     rgd = MODE_DEGREES;
     keycode = 0;
     key_pressed = 0;
+    new_prog_flag = 0;
+    flash_save_flag = 0;
+
+    // Restore a program from flash memory.
+    if (prog_available()) {
+        restore_prog();
+        new_prog_flag = 1;
+    }
 
 #if 1
     for (;;) {
         // Simulate one cycle of the calculator.
-        calc_step();
+        int running = calc_step();
+
+        if (running)
+            continue;
+
+        if (new_prog_flag) {
+            // Got new program code - send ot to calculator engine.
+            calc_write_code (new_prog);
+            new_prog_flag = 0;
+        } else {
+            // Fetch program code.
+            calc_get_code (prog);
+
+            // Check when program has been changed and save it
+            // to flash memory.
+            // Need some delay here to avoid glitches.
+            if (prog_modified()) {
+                flash_save_flag++;
+                if (flash_save_flag > 5) {
+                    save_prog();
+                    flash_save_flag = 0;
+                }
+            } else
+                flash_save_flag = 0;
+        }
     }
 #else
     int next = 0;
