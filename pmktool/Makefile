@@ -1,8 +1,8 @@
 CC              = gcc
 
-SVNVERS         = $(shell svnversion)
+GITVERS         = $(shell git rev-list HEAD --count)
 UNAME           = $(shell uname)
-CFLAGS          = -Wall -g -O -Ihidapi -DSVNVERSION='"$(SVNVERS)"'
+CFLAGS          = -Wall -g -O -Ihidapi -DGITVERSION='"$(GITVERS)"'
 LDFLAGS         = -g
 
 # Linux

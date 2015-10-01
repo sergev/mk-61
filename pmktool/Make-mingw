@@ -1,8 +1,8 @@
 #CC		= gcc
 CC		= i586-mingw32msvc-gcc
-SVNVERS         = $(shell svnversion)
+GITVERS         = $(shell git rev-list HEAD --count)
 
-CFLAGS          = -Wall -g -O -DMINGW32 -Ihidapi -DSVNVERSION='"$(SVNVERS)"'
+CFLAGS          = -Wall -g -O -DMINGW32 -Ihidapi -DGITVERSION='"$(GITVERS)"'
 LDFLAGS         = -s
 
 # Windows

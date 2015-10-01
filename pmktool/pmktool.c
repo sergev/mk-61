@@ -31,7 +31,7 @@
 #include "device.h"
 #include "localize.h"
 
-#define VERSION         "1."SVNVERSION
+#define VERSION         "1."GITVERSION
 
 int debug_level;
 char *progname;
@@ -310,7 +310,7 @@ int main (int argc, char **argv)
     setvbuf (stderr, (char *)NULL, _IOLBF, 0);
     printf (_("Utility for MK-54/MK-61 calculator, Version %s\n"), VERSION);
     progname = argv[0];
-    copyright = _("Copyright: (C) 2014 Serge Vakulenko");
+    copyright = _("Copyright: (C) 2014-2015 Serge Vakulenko");
     signal (SIGINT, interrupted);
 #ifdef __linux__
     signal (SIGHUP, interrupted);
