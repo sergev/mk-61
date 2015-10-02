@@ -1,0 +1,105 @@
+.CHARSET 1251
+
+; БРП-4
+; 41. Игра "Магический квадрат" (2 - 1159684)
+
+
+.ORG 0
+	K GOTO A
+	K GOTO B
+	K GOTO C
+	GOTO A61
+	GOTO A17
+	GOTO A70
+	GOTO A77
+
+
+A11:	 ; с адреса 23
+	M D
+	RM 0
+	1
+	+
+	M 0
+	K GSB D
+
+
+A17:	 ; с адреса 5
+	RM 1
+	RM 2
+	+
+	RM 3
+	+
+
+
+A22:	 ; с адреса 75, 82
+	R/S
+	GOTO A11
+	RM 3
+	RM 2
+	RM 1
+	1
+	0
+	/
+	M 2
+	F R
+	1
+	0
+	/
+	M 3
+	F R
+	2
+	F 10^X
+	*
+	M 1
+	RTN
+	RM 1
+	RM 4
+	RM 7
+	M 4
+	F R
+	M 1
+	F R
+	M 7
+	RTN
+	RM 2
+	RM 5
+	RM 8
+	M 5
+	F R
+	M 2
+	F R
+	M 8
+	RTN
+
+
+A61:	 ; с адреса 3
+	RM 3
+	RM 6
+	RM 9
+	M 6
+	F R
+	M 3
+	F R
+	M 9
+	RTN
+
+
+A70:	 ; с адреса 7
+	RM 4
+	RM 5
+	RM 6
+	+
+	+
+	GOTO A22
+
+
+A77:	 ; с адреса 9
+	RM 9
+	RM 8
+	+
+	RM 7
+	+
+	GOTO A22
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

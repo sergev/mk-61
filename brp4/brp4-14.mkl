@@ -1,0 +1,75 @@
+.CHARSET 1251
+
+; БРП-4
+; 14. Вычисление количества дней до любой даты XX и XXI столетия (1 - 1191863)
+
+.ORG 0
+
+A0:	 ; с адреса 57
+	RM 8
+	2
+	2
+	-
+	1
+	0
+	/
+	K INT
+	M 6
+	RM 9
+	+
+	1
+	8
+	9
+	9
+	-
+	3
+	6
+	5
+	,
+	2
+	5
+	*
+	K INT
+	RM 8
+	RM 6
+	1
+	2
+	*
+	-
+	1
+	4
+	-
+	3
+	0
+	,
+	5
+	9
+	*
+	K INT
+	+
+	2
+	9
+	+
+	RM 7
+	+
+	M 4
+	R/S
+	RM 4
+	7
+	/
+	K INT
+	7
+	*
+	-
+	M 5
+	R/S
+	GOTO A0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh
+.END 

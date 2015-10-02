@@ -1,0 +1,81 @@
+.CHARSET 1251
+
+; БРП-4
+; 6. Расчёт суточной калорийности (1 - 1072870)
+
+.ORG 0
+
+A0:	 ; с адреса 68
+	M E
+	2
+	F 10^X
+	-
+	M D
+	3
+	8
+	*
+	M C
+	1
+	6
+	/
+	K INT
+	0
+	,
+	4
+	*
+	M 4
+	2
+	/
+	M 1
+	2
+	/
+	M 0
+	RM 1
+	+
+	M 7
+	RM C
+	3
+	6
+	/
+	K INT
+	0
+	,
+	4
+	*
+	M 5
+	2
+	/
+	M 2
+	2
+	/
+	M A
+	RM 2
+	+
+	M 8
+	RM C
+	7
+	,
+	5
+	/
+	K INT
+	0
+	,
+	4
+	*
+	M 6
+	2
+	/
+	M 3
+	2
+	/
+	M B
+	RM 3
+	+
+	M 9
+	RM C
+	R/S
+	GOTO A0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

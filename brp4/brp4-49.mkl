@@ -1,0 +1,42 @@
+.CHARSET 1251
+
+; БРП-4
+; 49. Вычисление расстояния по дуге земного шара (1309428)
+
+.ORG 0
+	RM 7
+	RM 4
+	-
+	F COS
+	RM 8
+	F COS
+	*
+	RM 5
+	F COS
+	*
+	RM 8
+	F SIN
+	RM 5
+	F SIN
+	*
+	+
+	F ARCCOS
+	1
+	1
+	1
+	,
+	2
+	*
+	R/S
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

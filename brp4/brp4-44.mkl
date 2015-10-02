@@ -1,0 +1,112 @@
+.CHARSET 1251
+
+; БРП-4
+; 44. Игра "Жизнь" Конвея (2 - 1212898)
+
+.ORG 0
+
+A0:	 ; с адреса 71
+	CX
+	M C
+	1
+	0
+	M D
+	7
+	3
+	M B
+	RM 7
+	RM 8
+	RM 9
+	GSB A74
+	RM A
+	RM 8
+	+
+	RM 6
+	K GSB B
+	RM A
+	RM 9
+	+
+	RM 7
+	K GSB B
+	RM A
+	RM 8
+	+
+	RM 4
+	K GSB B
+	RM 9
+	RM 3
+	K GSB B
+	RM 7
+	RM 8
+	+
+	RM 9
+	+
+	RM 1
+	+
+	RM 2
+	+
+	RM 3
+	+
+	RM 4
+	RM 6
+	GSB A74
+	RM 7
+	RM 1
+	K GSB B
+	RM 0
+	RM 2
+	+
+	RM 6
+	K GSB B
+	RM 0
+	RM 3
+	+
+	RM 1
+	K GSB B
+	RM 0
+	RM 2
+	+
+	RM 4
+	K GSB B
+	RM 1
+	RM 2
+	RM 3
+	GSB A74
+	RM C
+	R/S
+	GOTO A0
+	RM 5
+
+
+A74:	 ; с адреса 11, 44, 67
+	+
+	+
+	F X!=0 A88
+	2
+	-
+	F X>=0 A89
+	F X=0 A87
+	1
+	GOTO A88
+
+
+A87:	 ; с адреса 82
+	CX
+
+
+A88:	 ; с адреса 76, 85
+	K M D
+
+
+A89:	 ; с адреса 80
+	RM C
+	K RM D
+	+
+	M C
+	RM D
+	1
+	-
+	M D
+	RTN
+	.DB 0FFh, 0FFh
+.END 

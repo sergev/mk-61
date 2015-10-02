@@ -1,0 +1,67 @@
+.CHARSET 1251
+
+; БРП-4
+; 31. Шахматная игра "Магараджа" (2 - 1014049)
+
+.ORG 0
+	CX
+	1
+	2
+	M 0
+
+
+A4:	 ; с адреса 11
+	RM 0
+	1
+	-
+	F X!=0 A13
+	K RM 0
+	R/S
+	GOTO A4
+
+
+A13:	 ; с адреса 7
+	4
+	4
+	5
+	R/S
+	ENT
+	1
+	2
+	7
+	R/S
+	ENT
+	8
+	7
+	8
+	R/S
+	ENT
+	1
+	6
+	-
+	F X=0 A38
+	RM C
+	R/S
+	RM D
+	0
+	R/S
+
+
+A38:	 ; с адреса 31
+	RM D
+	R/S
+	RM C
+	0
+	R/S
+	0
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

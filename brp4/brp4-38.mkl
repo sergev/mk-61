@@ -1,0 +1,117 @@
+.CHARSET 1251
+
+; БРП-4
+; 38. Определение числа "счастливых" билетов и их номеров (2 - 1110698)
+
+.ORG 0
+	CX
+	M 9
+	RM 7
+	RM 4
+	-
+	1
+	+
+	M 0
+	RM 4
+	1
+	0
+	M 1
+	ENT
+	F X^2
+	M 2
+	*
+	M 3
+	/
+	K INT
+
+
+A19:	 ; с адреса 67
+	M A
+	GSB A69
+	M B
+	RM 4
+	RM 3
+	RM A
+	*
+	-
+	GSB A69
+
+
+A30:	 ; с адреса 94
+	RM B
+	GSB A86
+	-
+	F X=0 A43
+	RM 9
+	1
+	+
+	M 9
+	RM 4
+	K GOTO 8
+	R/S
+
+
+A43:	 ; с адреса 34
+	F L0 A47
+	RM 9
+	R/S
+
+
+A47:	 ; с адреса 43
+	K RM 4
+	K RM 6
+	RM 6
+	GSB A92
+	M 6
+	K RM 5
+	RM 5
+	GSB A92
+	M 5
+	RM C
+	1
+	+
+	M C
+	GSB A92
+	RM A
+	1
+	+
+	GOTO A19
+
+
+A69:	 ; с адреса 20, 28
+	ENT
+	RM 2
+	/
+	K INT
+	M C
+	RM 2
+	*
+	-
+	ENT
+	RM 1
+	/
+	K INT
+	M 5
+	RM 1
+	*
+	-
+	M 6
+
+
+A86:	 ; с адреса 31
+	RM C
+	RM 5
+	+
+	RM 6
+	+
+	RTN
+
+
+A92:	 ; с адреса 50, 55, 62
+	RM 1
+	-
+	F X>=0 A30
+	CX
+	RTN
+	.DB 0FFh, 0FFh
+.END 

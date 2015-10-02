@@ -1,0 +1,58 @@
+.CHARSET 1251
+
+; БРП-4
+; 32. Игра Баше с множеством любых предметов (2 - 1023842)
+
+.ORG 0
+
+A0:	 ; с адреса 34, 39
+	F X!=0 A36
+	RM 4
+	<->
+	-
+	F X>=0 A36
+	RM 7
+	F ANS
+	-
+	M 7
+	R/S
+	RM 7
+	1
+	-
+	ENT
+	RM 4
+	1
+	+
+	/
+	F ANS
+	<->
+	K INT
+	*
+	-
+	F X=0 A28
+	1
+
+
+A28:	 ; с адреса 25
+	RM 7
+	<->
+	-
+	M 7
+	+/-
+	R/S
+	GOTO A0
+
+
+A36:	 ; с адреса 0, 5
+	CX
+	F 1/X
+	K NOP
+	GOTO A0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh
+.END 

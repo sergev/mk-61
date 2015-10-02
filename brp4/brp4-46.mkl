@@ -1,0 +1,123 @@
+.CHARSET 1251
+
+; БРП-4
+; 46. Игра "Опасный рейс" (2 - 1250698)
+
+.ORG 0
+	RM A
+	GSB A73
+	RM B
+	GSB A73
+	2
+	F 10^X
+	/
+	+
+	M D
+	GSB A81
+	6
+	F 10^X
+	/
+	RM D
+	+
+	R/S
+	ENT
+	9
+	0
+	<->
+	-
+	F SIN
+	F ANS
+	F COS
+	RM 1
+	*
+	RM A
+	+
+	M A
+	F X^2
+	<->
+	RM 1
+	*
+	RM B
+	+
+	M B
+	F X^2
+	+
+	9
+	M 2
+	-
+	F X>=0 A71
+	3
+	M 0
+
+
+A48:	 ; с адреса 68
+	RM A
+	K RM 2
+	-
+	F X^2
+	RM B
+	K RM 2
+	-
+	F X^2
+	+
+	F SQRT
+	M D
+	9
+	-
+	F X<0 A68
+	F L1 A66
+	K M->D
+
+
+A66:	 ; с адреса 63
+	RM D
+	R/S
+
+
+A68:	 ; с адреса 61
+	F L0 A48
+	K GOTO 0
+
+
+A71:	 ; с адреса 44
+	F PI
+	R/S
+
+
+A73:	 ; с адреса 1, 4
+	F X^2
+	F SQRT
+	7
+	F 10^X
+	+
+	F ANS
+	-
+	RTN
+
+
+A81:	 ; с адреса 11
+	RM A
+	F X<0 A91
+	RM B
+	F X<0 A89
+	3
+	RTN
+
+
+A89:	 ; с адреса 85
+	4
+	RTN
+
+
+A91:	 ; с адреса 82
+	RM B
+	F X<0 A96
+	2
+	RTN
+
+
+A96:	 ; с адреса 92
+	1
+	RTN
+	.DB 0FFh, 0FFh
+.END 

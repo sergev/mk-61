@@ -1,0 +1,28 @@
+Bill of materials
+~~~~~~~~~~~~~~~~~
+
+P1              header 1x2 (to battery holder 3x1.5V)
+J2              header 1x6
+J4              USB connector Type-B female
+
+B1-B30          buttons 12x12mm
+S1              switch SPST
+S2              switch SPDT
+
+Y1              crystal 12 MHz
+
+D1,D2           diode 1N5817
+
+C1,C4           capacitor 10 uF
+C6              capacitor 10 uF tantalum
+C2,C3,C9        capacitor 0.1 uF
+C7,C8           capacitor 22 pF
+
+R1              resistor 1 kOhm
+R2-R9           resistor 220 Ohm
+R10-R12         resistor 10 kOhm
+
+U1              voltage regulator 78L33 TO-92
+U3,U4           shift register 74HC595N
+IC1             socket 2x14 for PIC32MX220F032B
+DIS1,DIS2,DIS3  4x7 segment LED display common anode 3461BS

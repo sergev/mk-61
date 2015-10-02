@@ -1,0 +1,111 @@
+.CHARSET 1251
+
+; БРП-4
+; 43. Игра "Лабиринт" (2 - 1196084)
+
+.ORG 0
+
+A0:	 ; с адреса 56, 76
+	M 7
+
+
+A1:	 ; с адреса 46
+	K RM 7
+	F R
+	RM 7
+	-
+	M 4
+	RM 7
+	9
+	-
+	F X!=0 A75
+	RM 4
+	F X!=0 A67
+	RM C
+
+
+A15:	 ; с адреса 31
+	M 8
+	K RM 8
+	F R
+	RM 8
+	-
+	RM 7
+	RM 8
+	-
+	F X!=0 A52
+	F R
+	F X!=0 A33
+	1
+	0
+	*
+	GOTO A15
+
+
+A33:	 ; с адреса 26
+	RM D
+
+
+A34:	 ; с адреса 50
+	M 9
+	K RM 9
+	F R
+	RM 9
+	-
+	RM 7
+	RM 9
+	-
+	F X!=0 A52
+	F R
+	F X!=0 A58
+	1
+	0
+	*
+	GOTO A34
+
+
+A52:	 ; с адреса 23, 42
+	RM 4
+	1
+	0
+	*
+	GOTO A0
+
+
+A58:	 ; с адреса 45
+	RM D
+	1
+	0
+	/
+	RM 7
+	+
+	M D
+	GOTO A74
+
+
+A67:	 ; с адреса 12
+	RM C
+	1
+	0
+	/
+	RM 7
+	+
+	M C
+
+
+A74:	 ; с адреса 65
+	RM 7
+
+
+A75:	 ; с адреса 9
+	R/S
+	GOTO A0
+	0
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

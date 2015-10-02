@@ -1,0 +1,71 @@
+.CHARSET 1251
+
+; БРП-4
+; 25. Перевод метрических единиц длины 
+; в неметрические старые русские единицы и наоборот 
+; (1 - 1324856)
+
+.ORG 0
+
+A0:	 ; с адреса 49
+	M 7
+	1
+	0
+	0
+	*
+	M 8
+	1
+	EE
+	5
+	/
+	M 9
+	RM 7
+	1
+	0
+	6
+	7
+	/
+	M 0
+	5
+	0
+	0
+	*
+	M C
+	3
+	*
+	M A
+	1
+	6
+	*
+	M B
+	R/S
+	M B
+	1
+	6
+	/
+	M A
+	3
+	/
+	M C
+	5
+	0
+	0
+	/
+	M 0
+	1
+	0
+	6
+	7
+	*
+	GOTO A0
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+
+.END 

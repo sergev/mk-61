@@ -1,0 +1,50 @@
+.CHARSET 1251
+
+; БРП-4
+; 9. Вычисление индекса массы и артериального давления человека
+; (1 - 1126035)
+
+.ORG 0
+
+A0:	 ; с адреса 28
+	RM 7
+	RM 8
+	F X^2
+	/
+	M 4
+	2
+	4
+	-
+	2
+	*
+	K INT
+	8
+	0
+	<->
+	+
+	M 6
+	F ANS
+	1
+	2
+	5
+	+
+	M 9
+	RM 9
+	EE
+	3
+	RM 6
+	+
+	R/S
+	GOTO A0
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END

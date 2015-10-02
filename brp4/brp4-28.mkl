@@ -1,0 +1,69 @@
+.CHARSET 1251
+
+; БРП-4
+; 28. Перевод неметрических единиц длины англоязычных стран
+; в метрические единицы и наоборот (1 - 1364056)
+.ORG 0
+
+A0:	 ; с адреса 51
+	M 0
+	1
+	8
+	5
+	3
+	/
+	M 1
+	1
+	8
+	5
+	3
+	*
+	4
+	8
+	2
+	7
+	/
+	M 2
+	3
+	*
+	M 3
+	1
+	7
+	6
+	0
+	*
+	M 4
+	3
+	*
+	M 5
+	1
+	2
+	*
+	M 6
+	2
+	,
+	5
+	3
+	9
+	4
+	5
+	7
+	*
+	M 7
+	1
+	0
+	0
+	/
+	M 0
+	R/S
+	RM 0
+	GOTO A0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+
+.END 

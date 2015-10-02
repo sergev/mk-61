@@ -1,0 +1,69 @@
+.CHARSET 1251
+
+; БРП-4
+; 13. Определение физической работоспособности человека 
+; с помощью пробы Руфье-Диксона (1 - 1182049)
+
+.ORG 0
+
+A0:	 ; с адреса 22
+	RM 8
+	7
+	0
+	-
+	RM 9
+	RM 7
+	-
+	+
+	1
+	0
+	/
+	M 4
+	3
+	-
+	F X<0 A24
+	5
+	0
+
+
+A18:	 ; с адреса 30, 38, 42
+	ENT
+	9
+	/
+	R/S
+	GOTO A0
+
+
+A24:	 ; с адреса 14
+	3
+	-
+	F X<0 A32
+	4
+	0
+	GOTO A18
+
+
+A32:	 ; с адреса 26
+	2
+	-
+	F X<0 A40
+	3
+	0
+	GOTO A18
+
+
+A40:	 ; с адреса 34
+	2
+	0
+	GOTO A18
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

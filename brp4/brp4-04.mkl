@@ -1,0 +1,68 @@
+.CHARSET 1251
+
+; БРП4 
+; 4. Расчёт суточной потребности человека в витаминах A, B1, B2, C , PP (1 - 1049056)
+.ORG 0
+
+A0:	 ; с адреса 52
+	RM 7
+	2
+	F 10^X
+	-
+	M 9
+	RM 8
+	9
+	+
+	1
+	0
+	/
+	*
+	M 5
+	8
+	5
+	7
+	*
+	4
+	F 10^X
+	M 4
+	/
+	M A
+	RM 5
+	2
+	7
+	1
+	*
+	RM 4
+	/
+	M B
+	RM 5
+	3
+	2
+	1
+	*
+	RM 4
+	/
+	M D
+	RM 5
+	1
+	,
+	2
+	1
+	*
+	M C
+	RM 5
+	0
+	,
+	3
+	*
+	M E
+	R/S
+	GOTO A0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+
+.END 

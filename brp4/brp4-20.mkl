@@ -1,0 +1,54 @@
+.CHARSET 1251
+
+; БРП-4
+; 20. Исчисление налога на холостяков с заработков холостяков, 
+; одиноких и малосемейных граждан по месту основной работы 
+; (1 - 1264635)
+.ORG 0
+
+A0:	 ; с адреса 23
+	M 7
+	9
+	0
+	RM 7
+	-
+	F X>=0 A25
+	0
+	,
+	2
+	7
+	*
+	5
+	,
+	3
+	3
+	<->
+	-
+
+
+A18:	 ; с адреса 32
+	M 8
+	-
+	M 9
+	RM 8
+	R/S
+	GOTO A0
+
+
+A25:	 ; с адреса 5
+	<->
+	RM 7
+	0
+	,
+	0
+	6
+	*
+	GOTO A18
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

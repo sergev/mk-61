@@ -1,0 +1,97 @@
+.CHARSET 1251
+
+; БРП-4
+; 37. Игра "Чет - нечет" (2 - 1095277)
+
+.ORG 0
+
+A0:	 ; с адреса 52
+	M 9
+	RM A
+	-
+	F X=0 A6
+	K RM 4
+
+
+A6:	 ; с адреса 3, 70
+	RM 9
+	2
+	*
+	1
+	-
+	M D
+	RM 3
+	*
+	M C
+	K RM 5
+	RM D
+	RM 2
+	M 3
+	*
+	RM D
+	RM 1
+	M 2
+	*
+	RM 6
+	+
+	M 6
+	RM D
+	M 1
+	*
+	<->
+	RM 7
+	+
+	M 7
+	RM 2
+	*
+	RM C
+	RM 8
+	+
+	M 8
+	RM 3
+	*
+	+
+	+
+	F X>=0 A49
+	1
+	GOTO A50
+
+
+A49:	 ; с адреса 44
+	CX
+
+
+A50:	 ; с адреса 47
+	M A
+	R/S
+	GOTO A0
+	M 9
+	9
+	M 0
+
+
+A57:	 ; с адреса 62
+	CX
+	K M 0
+	RM 0
+	1
+	-
+	F X=0 A57
+	RM 9
+	F SIN
+	F X>=0 A69
+	CX
+
+
+A69:	 ; с адреса 63, 66
+	M 9
+	GOTO A6
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh
+.END 

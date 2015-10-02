@@ -1,0 +1,49 @@
+.CHARSET 1251
+
+; БРП-4
+; 35. Вычисление задуманного числа по заданным остаткам от деления на 3, 5 и 7 (2 - 1070035)
+
+.ORG 0
+
+A0:	 ; с адреса 27
+	RM 7
+	7
+	0
+	*
+	RM 8
+	2
+	1
+	*
+	+
+	RM 9
+	1
+	5
+	*
+	+
+	M 4
+	RM 4
+	1
+	0
+	5
+	/
+	K INT
+	1
+	0
+	5
+	*
+	-
+	R/S
+	GOTO A0
+	0
+	0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

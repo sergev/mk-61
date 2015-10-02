@@ -1,0 +1,106 @@
+.CHARSET 1251
+
+; БРП-4
+; 45. Игра "Гонки на зимнем озере" (2 - 1232491)
+
+.ORG 0
+	M 1
+	3
+	M 8
+	CX
+	M 2
+	M 5
+	M 6
+	M 7
+	M 9
+
+
+A9:	 ; с адреса 75, 86
+	K RM 6
+	RM 9
+	RM 8
+	R/S
+	M 3
+	<->
+	M 4
+	F PI
+	M D
+	1
+	RM 4
+	F X^2
+	-
+	F X>=0 A81
+	RM 4
+	RM 9
+	+
+	M D
+	F X!=0 A81
+	M 9
+	M 0
+
+
+A32:	 ; с адреса 73
+	RM 1
+	RM 2
+	RM 3
+	F COS
+	+
+	M 2
+	-
+	F X>=0 A84
+	RM 3
+	F SIN
+	RM 8
+	+
+	RM 9
+	9
+	/
+	-
+	RM 7
+	1
+	1
+	*
+	F PI
+	+
+	M 7
+	K RM 7
+	F R
+	RM 7
+	-
+	M 7
+	2
+	/
+	-
+	M 8
+	M D
+	F X>=0 A77
+	6
+	RM 8
+	-
+	F X>=0 A77
+	F L0 A32
+	GOTO A9
+
+
+A77:	 ; с адреса 66, 71
+	CX
+	M 9
+	3
+	M 8
+
+
+A81:	 ; с адреса 22, 28
+	K RM 5
+	RM D
+	K -
+
+
+A84:	 ; с адреса 39
+	RM 1
+	R/S
+	GOTO A9
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

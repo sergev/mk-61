@@ -1,0 +1,99 @@
+.CHARSET 1251
+
+;БРП-4
+; 52. Вычисление параметров для построения многоугольников Пуансо (2 - 1354277)
+
+.ORG 0
+	F PI
+	RM 7
+	/
+	F SIN
+	RM 8
+	*
+	2
+	*
+	M 9
+	1
+	M 3
+	RM 7
+	2
+	/
+	M 4
+	K FRAC
+	F X=0 A33
+
+
+A18:	 ; с адреса 23
+	F ANS
+	M 7
+	2
+	/
+	K FRAC
+	F X!=0 A18
+	1
+	ENT
+	2
+
+
+A28:	 ; с адреса 59
+	F 1/X
+	-
+	RM 4
+	*
+	M 4
+
+A33:	 ; с адреса 16
+	RM 7
+	F SQRT
+	M 6
+
+
+A36:	 ; с адреса 48
+	RM 6
+	RM 3
+	2
+	+
+	M 3
+	-
+	F X>=0 A61
+	RM 7
+	RM 3
+	/
+	K FRAC
+	F X=0 A36
+
+
+A50:	 ; с адреса 55
+	F ANS
+	M 7
+	RM 3
+	/
+	K FRAC
+	F X!=0 A50
+	1
+	RM 3
+	GOTO A28
+
+A61:     ; с адреса 42
+	1
+	RM 7
+	F 1/X
+	-
+	F X!=0 A70
+	RM 4
+	*
+	M 4
+
+
+A70:	 ; с адреса 65
+	RM 4
+	9
+	F 1/X
+	+
+	K INT
+	M 4
+	R/S
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh
+.END 

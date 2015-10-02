@@ -1,0 +1,75 @@
+.CHARSET 1251
+
+; БРП-4
+; 53. Вычисление параметров банки, 
+; имеющей форму прямого кругового цилиндра (2 - 1369663)
+
+.ORG 0
+	RM 7
+	F PI
+	2
+	*
+	M 6
+	/
+	3
+	F 1/X
+	<->
+	F X^Y
+	M 4
+	2
+	*
+	M 5
+	RM 6
+	1
+	+
+	*
+	M 9
+	3
+	F 1/X
+	RM 7
+	F X^2
+	RM 6
+	*
+	F X^Y
+	3
+	*
+	M 8
+	R/S
+	RM 7
+	F PI
+	2
+	*
+	M 6
+	F PI
+	*
+	/
+	3
+	F 1/X
+	<->
+	F X^Y
+	M 4
+	RM 6
+	*
+	M 5
+	RM 4
+	+
+	RM 5
+	*
+	M 8
+	3
+	F 1/X
+	RM 7
+	4
+	*
+	F PI
+	*
+	F X^Y
+	3
+	*
+	M 9
+	R/S
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh
+.END 

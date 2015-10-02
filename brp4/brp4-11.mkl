@@ -1,0 +1,77 @@
+.CHARSET 1251
+
+; БРП-4
+; 11. Определение физической работоспособности человека 
+; по Гарвардскому степ-тесту (1 - 1152656)
+
+.ORG 0
+
+A0:	 ; с адреса 23
+	RM 1
+	5
+	0
+	*
+	RM 7
+	RM 8
+	+
+	RM 9
+	+
+	/
+	K INT
+	M 4
+	5
+	0
+	-
+	F X<0 A25
+	1
+	0
+
+
+A19:	 ; с адреса 32, 41, 50, 54
+	ENT
+	9
+	/
+	R/S
+	GOTO A0
+
+
+A25:	 ; с адреса 15
+	1
+	0
+	-
+	F X<0 A34
+	2
+	0
+	GOTO A19
+
+
+A34:	 ; с адреса 28
+	1
+	0
+	-
+	F X<0 A43
+	3
+	0
+	GOTO A19
+
+
+A43:	 ; с адреса 37
+	2
+	0
+	-
+	F X<0 A52
+	4
+	0
+	GOTO A19
+
+
+A52:	 ; с адреса 46
+	5
+	0
+	GOTO A19
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+
+.END 

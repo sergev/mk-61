@@ -1,0 +1,105 @@
+.CHARSET 1251
+
+; БРП-4
+; 54. Вычисление внутренних температур 
+; однородной квадратной пластины (2 - 1382298)
+
+.ORG 0
+	RM A
+	RM B
+	RM C
+	RM D
+	GSB A91
+	M 5
+	1
+	4
+	M 3
+	4
+	M 0
+	-
+	M 1
+
+
+A14:	 ; с адреса 21
+	K RM 1
+	K RM 3
+	RM 5
+	+
+	2
+	/
+	K M 1
+	F L0 A14
+	K RM 0
+
+
+A24:	 ; с адреса 87
+	RM 0
+	1
+	+
+	M 0
+	RM 4
+	RM B
+	RM D
+	RM 8
+	GSB A91
+	M 7
+	RM 8
+	RM D
+	RM C
+	RM 6
+	GSB A91
+	M 9
+	RM 5
+	RM 7
+	RM D
+	GSB A91
+	M 8
+	RM 6
+	RM C
+	RM A
+	RM 2
+	GSB A91
+	M 3
+	RM 5
+	RM 9
+	RM C
+	GSB A91
+	M 6
+	RM 2
+	RM A
+	RM B
+	RM 4
+	GSB A91
+	M 1
+	RM A
+	RM 3
+	RM 5
+	GSB A91
+	M 2
+	RM 1
+	RM B
+	RM 7
+	RM 5
+	GSB A91
+	RM 4
+	<->
+	M 4
+	-
+	K ABS
+	RM E
+	-
+	F X<0 A24
+	RM 0
+	R/S
+
+
+A91:	 ; с адреса 4, 32, 39, 45, 52, 58, 65, 71, 78
+	+
+	+
+	+
+	4
+	/
+	RTN
+	0
+	.DB 0FFh, 0FFh
+.END 

@@ -1,0 +1,75 @@
+.CHARSET 1251
+
+; БРП-4
+; 5. Расчёт суточной потребности человека в основных минеральных веществах (1 - 1060263)
+
+.ORG 0
+
+A0:	 ; с адреса 58
+	M 0
+	2
+	F 10^X
+	-
+	M 3
+	0
+	,
+	0
+	1
+	1
+	4
+	3
+	*
+	M 7
+	2
+	*
+	M 4
+	RM 3
+	0
+	,
+	0
+	4
+	2
+	8
+	6
+	*
+	M 8
+	RM 3
+	7
+	*
+	3
+	F 10^X
+	/
+	M 9
+	RM 3
+	5
+	/
+	M 5
+	RM 3
+	7
+	0
+	/
+	M 6
+	RM 3
+	0
+	,
+	2
+	1
+	4
+	3
+	*
+	M 1
+	2
+	F 10^X
+	/
+	M 2
+	RM 3
+	R/S
+	GOTO A0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh
+.END 

@@ -1,0 +1,85 @@
+.CHARSET 1251
+
+; БРП-4
+; 40. Вычисление выигрышных номеров спортлото "6 из 45" (2 - 1145670)
+
+.ORG 0
+	M A
+	4
+	5
+	M B
+	5
+	M 0
+	1
+	M 1
+	9
+	M 2
+	+
+	M 3
+	M E
+	GSB A55
+	M 9
+
+
+A16:	 ; с адреса 33, 53
+	GSB A55
+
+A18:	 ; с адреса 23
+	RM C
+	K RM 3
+	-
+	F X!=0 A49
+	F L1 A18
+	RM C
+	K M 2
+	RM E
+	M 3
+	RM 2
+	-
+	M 1
+	M D
+	F L0 A16
+	R/S
+	RM 9
+	R/S
+	RM 8
+	R/S
+	RM 7
+	R/S
+	RM 6
+	R/S
+	RM 5
+	R/S
+	RM 4
+	R/S
+	K GOTO 0
+
+
+A49:	 ; с адреса 21
+	RM E
+	M 3
+	RM D
+	M 1
+	GOTO A16
+
+
+A55:	 ; с адреса 13, 16
+	RM A
+	F PI
+	+
+	F X^2
+	F X^2
+	K FRAC
+	M A
+	RM B
+	*
+	1
+	+
+	K INT
+	M C
+	RM C
+	RTN
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

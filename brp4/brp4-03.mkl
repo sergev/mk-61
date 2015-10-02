@@ -1,0 +1,40 @@
+.CHARSET 1251
+; БРП-4
+
+; 3. Расчёт рационального питания пожилых людей 
+; (1 - 1037856)
+.ORG 0
+
+A0:	 ; с адреса 48
+	M 7
+	2 F 10^X -
+	M 8
+	38 *
+	M 9
+	21 * 400 /
+	2 F 1/X	M 1
+	+
+	K INT
+	M 4
+	RM 9
+	16 * 900 /
+	RM 1
+	+
+	K INT
+	M 5
+	RM 9
+	63 * 375 /
+	RM 1
+	+
+	K INT
+	M 6
+	RM 9
+	R/S
+	GOTO A0
+	0 0 0 0 0 0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+
+.END 

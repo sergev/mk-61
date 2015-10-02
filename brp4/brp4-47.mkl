@@ -1,0 +1,112 @@
+.CHARSET 1251
+
+; БРП-4
+; 47. Игра "Подводное путешествие" (2 - 1270298)
+
+.ORG 0
+	K GOTO A
+	R/S
+	M 0
+	M 1
+	RM 3
+	<->
+	-
+	M 3
+
+
+A8:	 ; с адреса 92
+	3
+	F 10^X
+	-
+	RM 2
+	*
+	RM 9
+	+
+	F X<0 A18
+	CX
+
+
+A18:	 ; с адреса 15
+	M 9
+	RM A
+	-
+	F X<0 A85
+	RM 9
+	RM B
+	-
+	F X<0 A85
+	RM 0
+	F SQRT
+	3
+	3
+	*
+	M 0
+	RM 2
+	*
+	RM 1
+	F COS
+	*
+	RM 4
+	<->
+	-
+	M 4
+	RM 6
+	F ANS
+	-
+	M 6
+	RM 5
+	RM 0
+	RM 2
+	*
+	RM 1
+	F SIN
+	*
+	-
+	M 5
+	RM 7
+	F ANS
+	-
+	M 7
+	RM 8
+	RM 2
+	-
+	M 8
+	F X>=0 A85
+	RM 6
+	F X^2
+	RM 7
+	F X^2
+	+
+	F SQRT
+	5
+	0
+	0
+	-
+	F X<0 A82
+	RM 7
+	RM 6
+	RM D
+	K GOTO A
+
+
+A82:	 ; с адреса 76
+	RM 5
+	RM 4
+	K GOTO A
+
+
+A85:	 ; с адреса 21, 26, 64
+	8
+	8
+	M A
+	RM C
+	R/S
+	0
+	M 0
+	GOTO A8
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh
+.END 

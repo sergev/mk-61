@@ -1,0 +1,82 @@
+.CHARSET 1251
+
+; БРП-4
+; 26. Перевод метрических единиц площади 
+; в неметрические старые русские единицы и наоборот 
+; (1 - 1336070)
+.ORG 0
+
+A0:	 ; с адреса 64
+	M 7
+	1
+	0
+	0
+	M 0
+	*
+	M 8
+	RM 0
+	*
+	M 9
+	RM 7
+	RM 0
+	/
+	M 4
+	RM 0
+	/
+	M 5
+	RM 0
+	/
+	M 6
+	1
+	,
+	1
+	3
+	8
+	/
+	M B
+	2
+	5
+	EE
+	4
+	*
+	M C
+	2
+	4
+	0
+	0
+	/
+	M D
+	R/S
+	M C
+	2
+	4
+	0
+	0
+	/
+	M D
+	2
+	5
+	0
+	/
+	2
+	,
+	4
+	*
+	M B
+	1
+	,
+	1
+	3
+	8
+	EE
+	6
+	*
+	GOTO A0
+	0
+	0
+	0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 

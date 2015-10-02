@@ -1,0 +1,84 @@
+.CHARSET 1251
+
+; БРП-4
+; 30. Вычисление нового рейтинга шахматиста (2 - 1000070)
+
+.ORG 0
+
+A0:	 ; с адреса 67
+	RM 9
+	RM 8
+	-
+	M 6
+	RM 9
+	RM 8
+	RM 7
+	*
+	RM 9
+	-
+	RM 7
+	1
+	-
+	/
+	-
+	8
+	0
+	0
+	/
+	2
+	F 1/X
+	M 0
+	+
+	RM 4
+	*
+	RM 5
+	<->
+	M 5
+	-
+	1
+	0
+	*
+	K INT
+	RM 9
+	+
+	M 9
+	RM 1
+	F X!=0 A65
+	RM 9
+	5
+	/
+	K FRAC
+	F X!=0 A52
+	F ANS
+	K INT
+	5
+	*
+	5
+	+
+	M 9
+
+
+A52:	 ; с адреса 43
+	RM 5
+	K INT
+	M 5
+	F ANS
+	K FRAC
+	RM 0
+	-
+	F X>=0 A65
+	RM 5
+	RM 0
+	+
+	M 5
+
+
+A65:	 ; с адреса 37, 59
+	RM 9
+	R/S
+	GOTO A0
+	0
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+	.DB 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh, 0FFh
+.END 
