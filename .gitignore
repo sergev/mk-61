@@ -1,0 +1,4 @@
+*.o
+pmktool/pmktool
+test/test
+test/log
