@@ -14,7 +14,7 @@ LDFLAGS         = -e _start
 OBJS            = ir2.o ik13.o calc.o
 
 #
-# Select MK-61 (default) or MK-64.
+# Select MK-61 (default) or MK-54.
 #
 #CFLAGS          += -DMK_54
 
