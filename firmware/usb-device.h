@@ -739,7 +739,7 @@ void usb_ctrl_trf_out_handler (void);
 void usb_wake_from_suspend (void);
 void usb_suspend (void);
 void usb_stall_handler (void);
-volatile USB_HANDLE usb_transfer_one_packet (unsigned ep, unsigned dir, unsigned char* data, unsigned len);
+USB_HANDLE usb_transfer_one_packet (unsigned ep, unsigned dir, unsigned char* data, unsigned len);
 void usb_enable_endpoint (unsigned ep, unsigned options);
 void usb_configure_endpoint (unsigned EPNum, unsigned direction);
 

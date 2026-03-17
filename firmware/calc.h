@@ -164,7 +164,7 @@ void calc_poll(void);
 // Read the stack: X, Y, Z, T and X1 values.
 // Each value contains 12 bcd digits stored as six bytes.
 //
-void calc_get_stack (unsigned char stack[][6]);
+void calc_get_stack (unsigned char stack[5][6]);
 
 //
 // Read the memory registers 0-9, A-D.

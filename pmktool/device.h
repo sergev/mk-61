@@ -27,7 +27,7 @@ device_t *device_open (int debug_level);
 
 void device_close (device_t *t);
 
-void device_read_stack (device_t *t, unsigned char stack[][6]);
+void device_read_stack (device_t *t, unsigned char stack[5][6]);
 
 void device_read_regs (device_t *t, unsigned char stack[][6]);
 

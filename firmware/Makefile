@@ -1,5 +1,5 @@
-P               = /usr/local/pic32-tools/bin/pic32-
-CC              = $(P)gcc -mips32r2 -g -nostdlib
+P               = /usr/local/mips-elf/bin/mips-elf-
+CC              = $(P)gcc -mips32r2 -g -nostdlib -ffreestanding
 OBJCOPY         = $(P)objcopy
 OBJDUMP         = $(P)objdump
 SIZE            = $(P)size
@@ -48,7 +48,7 @@ LDFLAGS         += -T mx2-ram8k.ld
 #LDFLAGS         += -T mx7-bootloader.ld
 
 all:            $(PROG).hex
-		@$(MAKE) -C pmktool $@
+		@$(MAKE) -C ../pmktool $@
 		$(SIZE) $(PROG).elf
 
 $(PROG).hex:   $(OBJS)
@@ -61,8 +61,8 @@ load:           $(PROG).hex
 
 clean:
 		rm -f *.o *.lst *~ *.elf $(PROG).hex *.dis $(PROG)
-		@$(MAKE) -C pmktool $@
-		@$(MAKE) -C test $@
+		@$(MAKE) -C ../pmktool $@
+		@$(MAKE) -C ../test $@
 
 debug:          $(PROG).hex
 		$(GDB) $(PROG).elf

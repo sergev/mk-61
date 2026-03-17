@@ -184,8 +184,7 @@ static void uerror (char *fmt, ...)
  * Suboptimal 32-bit hash function.
  * Copyright (C) 2006 Serge Vakulenko.
  */
-static unsigned hash_rot13 (s)
-    const char *s;
+static unsigned hash_rot13 (const char *s)
 {
     unsigned hash, c;
 
@@ -218,8 +217,7 @@ static void hashinit()
 /*
  * Get decimal number.
  */
-static void getnum (c)
-    int c;
+static void getnum (int c)
 {
     char *cp;
 
@@ -237,8 +235,7 @@ static void getnum (c)
 /*
  * Read a name and store it into name[] array.
  */
-static void getname (c)
-    int c;
+static void getname (int c)
 {
     char *cp;
 
@@ -310,7 +307,7 @@ static int lookcmd()
     return (-1);
 }
 
-static char *alloc (len)
+static char *alloc (int len)
 {
     int r;
 
@@ -408,7 +405,7 @@ skiptoeol:  while ((c = getchar()) != '\n')
     }
 }
 
-static void ungetlex (val)
+static void ungetlex (int val)
 {
     blexflag = 1;
     backlex = val;

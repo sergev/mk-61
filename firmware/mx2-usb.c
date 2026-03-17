@@ -560,7 +560,7 @@ void restore_prog()
  */
 void save_prog()
 {
-    int i;
+    unsigned i;
 
 #if 1
     // DEBUG: set segments to visualize the operation.
@@ -571,11 +571,10 @@ void save_prog()
     /* Erase flash page. */
     nvm_operation (PIC32_NVMCON_PAGE_ERASE, FLASH_BASE, 0);
 
+    unsigned const *word = (unsigned const*)prog;
     for (i=0; i<CODE_NBYTES; i+=4) {
         /* Write word to flash memory. */
-        unsigned word = prog[i] | prog[i+1] << 8 |
-                        prog[i+2] << 16 | prog[i+3] << 24;
-        nvm_operation (PIC32_NVMCON_WORD_PGM, FLASH_BASE + i, word);
+        nvm_operation (PIC32_NVMCON_WORD_PGM, FLASH_BASE + i, word[i/4]);
     }
     clear_segments();
 }

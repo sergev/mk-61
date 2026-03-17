@@ -23,7 +23,7 @@
  * this software.
  */
 #include "calc.h"
-#include <stdio.h>
+//#include <stdio.h>
 
 //
 // MK-54 calculator consists of two PLM chips ИК1301 and ИК1303,

@@ -2,7 +2,7 @@ CC              = gcc
 
 GITVERS         = $(shell git rev-list HEAD --count)
 UNAME           = $(shell uname)
-CFLAGS          = -Wall -g -O -Ihidapi -DGITVERSION='"$(GITVERS)"'
+CFLAGS          = -Wall -Werror -g -O -Ihidapi -DGITVERSION='"$(GITVERS)"'
 LDFLAGS         = -g
 
 # Linux

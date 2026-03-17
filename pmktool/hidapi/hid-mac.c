@@ -475,9 +475,9 @@ struct hid_device_info  HID_API_EXPORT *hid_enumerate(unsigned short vendor_id, 
 		if ((vendor_id == 0x0 && product_id == 0x0) ||
 		    (vendor_id == dev_vid && product_id == dev_pid)) {
 			struct hid_device_info *tmp;
-			size_t len;
+			size_t len __attribute__((unused));
 
-		    	/* VID/PID match. Create the record. */
+			/* VID/PID match. Create the record. */
 			tmp = malloc(sizeof(struct hid_device_info));
 			if (cur_dev) {
 				cur_dev->next = tmp;
@@ -717,7 +717,7 @@ static void *read_thread(void *param)
 
 hid_device * HID_API_EXPORT hid_open_path(const char *path)
 {
-  	int i;
+	int i;
 	hid_device *dev = NULL;
 	CFIndex num_devices;
 
@@ -737,7 +737,7 @@ hid_device * HID_API_EXPORT hid_open_path(const char *path)
 	CFSetGetValues(device_set, (const void **) device_array);
 	for (i = 0; i < num_devices; i++) {
 		char cbuf[BUF_LEN];
-		size_t len;
+		size_t len __attribute__((unused));
 		IOHIDDeviceRef os_dev = device_array[i];
 
 		len = make_path(os_dev, cbuf, sizeof(cbuf));
@@ -796,8 +796,8 @@ static int set_report(hid_device *dev, IOHIDReportType type, const unsigned char
 	IOReturn res;
 
 	/* Return if the device has been disconnected. */
-   	if (dev->disconnected)
-   		return -1;
+	if (dev->disconnected)
+		return -1;
 
 	if (data[0] == 0x0) {
 		/* Not using numbered Reports.

@@ -1,4 +1,7 @@
 *.o
+*.dis
+*.elf
+*.hex
 pmktool/pmktool
 test/test
 test/log
