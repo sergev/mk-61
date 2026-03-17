@@ -1,4 +1,4 @@
-P               = /usr/local/mips-elf/bin/mips-elf-
+P               = mipsel-linux-gnu-
 CC              = $(P)gcc -mips32r2 -g -nostdlib -ffreestanding
 OBJCOPY         = $(P)objcopy
 OBJDUMP         = $(P)objdump

@@ -7,3 +7,12 @@ See wikipedia for more information:
  * [Электроника МК-61](https://ru.wikipedia.org/wiki/%D0%AD%D0%BB%D0%B5%D0%BA%D1%82%D1%80%D0%BE%D0%BD%D0%B8%D0%BA%D0%B0_%D0%9C%D0%9A-61) (Russian)
 
 ![Board](https://raw.githubusercontent.com/sergev/mk-61/master/board/replica61-soldered-small.jpg)
+
+## Build
+
+On Ubuntu:
+
+    sudo apt install gcc-mipsel-linux-gnu
+    git clone https://github.com/sergev/mk-61.git
+    cd mk-61/firmware
+    make
