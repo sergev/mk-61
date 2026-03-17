@@ -1,7 +1,7 @@
 /*
  * Home made board with PIC32MX120 processor.
  *
- * Copyright (C) 2013 Serge Vakulenko, <serge@vak.ru>
+ * Copyright (C) 2013 Serge Vakulenko, <serge.vakulenko@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software
  * and its documentation for any purpose and without fee is hereby

@@ -2,7 +2,7 @@
  * Simulator of MK-54/MK-61 programmable soviet calculator.
  * Based on sources of emu145 project: https://code.google.com/p/emu145/
  *
- * Copyright (C) 2013 Serge Vakulenko, <serge@vak.ru>
+ * Copyright (C) 2013 Serge Vakulenko, <serge.vakulenko@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software
  * and its documentation for any purpose and without fee is hereby
@@ -23,7 +23,6 @@
  * this software.
  */
 #include "calc.h"
-//#include <stdio.h>
 
 //
 // MK-54 calculator consists of two PLM chips ИК1301 and ИК1303,

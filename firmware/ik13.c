@@ -2,7 +2,7 @@
  * К145ИК130x chip.
  * Based on sources of emu145 project: https://code.google.com/p/emu145/
  *
- * Copyright (C) 2013 Serge Vakulenko, <serge@vak.ru>
+ * Copyright (C) 2013 Serge Vakulenko, <serge.vakulenko@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software
  * and its documentation for any purpose and without fee is hereby

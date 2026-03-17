@@ -1,7 +1,7 @@
 /*
  * Hardware register defines for Microchip PIC32MX1/MX2 microcontrollers.
  *
- * Copyright (C) 2012-2014 Serge Vakulenko, <serge@vak.ru>
+ * Copyright (C) 2012-2014 Serge Vakulenko, <serge.vakulenko@gmail.com>
  *
  * This file is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or

@@ -3,7 +3,7 @@
  * External crystal 12 MHz used as a clock source.
  * USB driver based on open sources from Microchip library.
  *
- * Copyright (C) 2013 Serge Vakulenko, <serge@vak.ru>
+ * Copyright (C) 2013 Serge Vakulenko, <serge.vakulenko@gmail.com>
  *
  * Permission to use, copy, modify, and distribute this software
  * and its documentation for any purpose and without fee is hereby
